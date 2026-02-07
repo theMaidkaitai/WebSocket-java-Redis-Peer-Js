@@ -18,7 +18,7 @@ export default function initClient(roomsStore: RoomsStore, onCreateUser: () => v
         heartbeatOutgoing: 4000,
 
 
-        onConnect: function (socket) {
+        onConnect: function () {
 
             if (onCreateUser) {
                 setTimeout(() => {
@@ -122,7 +122,7 @@ export default function initClient(roomsStore: RoomsStore, onCreateUser: () => v
             })
         },
 
-        onWebSocketClose: function (socket) {
+        onWebSocketClose: function () {
             console.log("WebSocket closed!");
         },
 
@@ -151,7 +151,7 @@ export default function initClient(roomsStore: RoomsStore, onCreateUser: () => v
         console.log('Additional details: ' + frame.body);
     };
 
-    client.onDisconnect = function (frame) {
+    client.onDisconnect = function () {
         console.log("WebSocket disconnected");
     }
     client.activate();

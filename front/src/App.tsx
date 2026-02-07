@@ -12,7 +12,6 @@ import initClient from "./ws";
 
 function App() {
     const stompClientRef = useRef<Client | null>(null);
-    const [userNick, setUserNick] = useState<string>('');
     const { user, rooms } = useContext(Context);
 
 
