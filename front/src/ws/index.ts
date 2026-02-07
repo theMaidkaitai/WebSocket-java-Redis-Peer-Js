@@ -112,7 +112,7 @@ export default function initClient(roomsStore: RoomsStore, onCreateUser: () => v
 
             client.subscribe('/topic/room/updates', (message) => {
                 const updatedRooms = JSON.parse(message.body);
-                rooms.setRooms(updatedRooms);
+                // rooms.setRooms(updatedRooms);
                 console.log("Обновление комнаты:", message.body);
             })
 
