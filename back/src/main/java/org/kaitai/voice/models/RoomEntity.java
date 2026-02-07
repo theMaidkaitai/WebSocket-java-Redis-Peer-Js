@@ -31,4 +31,21 @@ public class RoomEntity implements Serializable {
     public void removeUser(String userId) {
         usersId.remove(userId);
     }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public Integer getMaxPeople() {
+        return maxPeople;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Set<String> getUsersId() {
+        return usersId;
+    }
 }
