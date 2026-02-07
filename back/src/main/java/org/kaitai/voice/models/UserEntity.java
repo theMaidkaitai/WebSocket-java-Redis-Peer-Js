@@ -16,4 +16,7 @@ public class UserEntity {
     }
 
 
+    public String getId() {
+        return id;
+    }
 }
