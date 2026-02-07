@@ -1,0 +1,145 @@
+version: '3.8'
+
+
+networks:
+  app-network:
+    driver: bridge  
+
+volumes:
+    redis_data:
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx-container
+    depends_on:
+      backend:
+        condition: service_healthy  
+      frontend:
+        condition: service_started
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - app-network
+    restart: unless-stopped
+
+    
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    networks:
+      - app-network
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    container_name: backend-container
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - SPRING_REDIS_HOST=redis  
+      - SPRING_REDIS_PORT=6379
+      - SPRING_REDIS_PASSWORD=${REDIS_PASSWORD}
+      - PEERJS_URL=http://peerjs:9000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s 
+
+
+
+  peerjs:
+    image: peerjs/peerjs-server:latest
+    ports:
+      - "9000:9000"
+    environment:
+      - PORT=9000
+      - PATH=/peerjs
+      - KEY=your-secret-key
+      - ALLOW_DISCOVERY=true
+      - CORS_ORIGIN=http://localhost:3000,http://frontend:80  # CORS
+    restart: unless-stopped
+    volumes:
+      - ./peerjs-config.js:/app/server.js
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:9000/peerjs/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+  redis:
+    image: redis:latest
+    container_name: redis-container
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_USER=${REDIS_USER}
+      - REDIS_USER_PASSWORD=${REDIS_USER_PASSWORD}
+    #ports:
+    # - "6380:6379"
+    expose:
+      - 6379
+    volumes:
+      - ./redisdata:/data
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    command: >
+      sh -c '
+        mkdir -p /usr/local/etc/redis &&
+        echo "bind 0.0.0.0" > /usr/local/etc/redis/redis.conf &&
+        echo "requirepass $REDIS_PASSWORD" >> /usr/local/etc/redis/redis.conf &&
+        echo "appendonly yes" >> /usr/local/etc/redis/redis.conf &&
+        echo "appendfsync everysec" >> /usr/local/etc/redis/redis.conf &&
+        echo "user default on nopass ~* +@all" > /usr/local/etc/redis/users.acl &&
+        echo "user $REDIS_USER on >$REDIS_USER_PASSWORD ~* +@all" >> /usr/local/etc/redis/users.acl &&
+        redis-server /usr/local/etc/redis/redis.conf --aclfile /usr/local/etc/redis/users.acl
+      '
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "$REDIS_PASSWORD", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend-container
+    environment:
+      - REACT_APP_PEERJS_HOST=${PEERJS_HOST:-localhost}
+      - REACT_APP_PEERJS_PORT=443  # Через nginx на 443 порту
+      - REACT_APP_PEERJS_PATH=/peerjs
+      - REACT_APP_PEERJS_SECURE=true
+    expose:
+      - "80"
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:  
+      test: ["CMD-SHELL", "curl -f http://localhost || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+
+      

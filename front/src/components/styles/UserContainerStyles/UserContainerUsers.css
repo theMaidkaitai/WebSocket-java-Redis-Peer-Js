@@ -1,0 +1,76 @@
+
+.sound-logo {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    filter: brightness(0.9);
+}
+
+.Main-Users-Container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+
+.Main-Users-Container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.User-Container {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    min-height: 100px;
+}
+
+.User-Header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    padding: 15px 20px;
+    text-align: center;
+}
+
+.User-Header-Name {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 25px;
+    font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial;
+    font-weight: 500;
+    color: white;
+}
+
+.User-Divider {
+    height: 2px;
+    background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.2) 80%,
+    transparent 100%
+    );
+    margin: 0;
+    width: 100%;
+}
+
+.User-Content {
+    padding: 15px 20px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.User-Header-Date {
+    font-size: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.room-title {
+    cursor: pointer;
+}

@@ -1,0 +1,13 @@
+.Main-Users-Container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.User-Container {
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    word-break: break-word;
+}

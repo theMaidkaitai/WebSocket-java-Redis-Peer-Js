@@ -1,0 +1,36 @@
+.form-container1 {
+    position: absolute;
+    left: 250px;
+    top: 150px;
+}
+
+.input-button1 {
+    background-color: #000B17;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: none;
+    color: white;
+    border-radius: 15px;
+    padding: 7px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.input-button1:hover {
+    background-color: #00162e;
+}
+
+
+
+
+.form-input1 {
+    background: #0F1217;
+    border-radius: 10px;
+    color: white;
+    height: 30px;
+    font-size: 20px;
+}

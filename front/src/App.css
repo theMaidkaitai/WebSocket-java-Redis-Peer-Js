@@ -1,0 +1,57 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /*background: #0F1217;*/
+}
+
+body {
+    background: #0F1217;
+}
+.App-main-container {
+    display: flex;
+    min-height: 100vh; /* ОБЯЗАТЕЛЬНО! */
+    width: 100%;
+    background-image: url("./assets/background.jpg");
+    background-size: 1200px;
+    background-position: right;
+    background-repeat: no-repeat;
+    position: relative;
+}
+.App-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-right: black 1px solid;
+    border-radius: 5px;
+    width: 250px;
+    position: fixed;
+    height: 100vh;
+    background-color: #200F29;
+    color: white;
+    overflow: hidden;
+
+}
+
+.UsersContainer {
+    overflow-y: auto;
+}
+
+.NickContainer {
+    position: absolute;
+    left: 250px;
+    top: 185px;
+    color: white;
+    font-family: "Helvetica Neue Light";
+    font-size: 20px;
+}
+
+.background-img {
+    width: 300px;
+}
+
+.button-date {
+    position: absolute;
+    top: 50px;
+    left: 300px;
+}
