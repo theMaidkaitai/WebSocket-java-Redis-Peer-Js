@@ -67,6 +67,7 @@ services:
       - ALLOW_DISCOVERY=true
       - PROXY=1 
     restart: unless-stopped
+    command: peerjs --port 9000 --path /peerjs --key peerjs-secret-key --allow_discovery
     networks:
       - app-network
     healthcheck:
