@@ -57,7 +57,9 @@ services:
 
 
   peerjs:
-    build: ./peerjs
+    build: 
+      context: ./peerjs
+      dockerfile: dockerfile
     ports:
       - "9000:9000"
     environment:
