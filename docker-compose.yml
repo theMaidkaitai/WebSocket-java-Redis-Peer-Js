@@ -45,7 +45,7 @@ services:
       - SPRING_REDIS_HOST=redis  
       - SPRING_REDIS_PORT=6379
       - SPRING_REDIS_PASSWORD=${REDIS_PASSWORD}
-      - PEERJS_URL=http://peerjs:9000
+      - PEERJS_URL=http://nginx/peerjs     
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "nc -z localhost 8080"]
@@ -57,7 +57,7 @@ services:
 
 
   peerjs:
-    image: peerjs/peerjs-server:latest
+    build: ./peerjs
     ports:
       - "9000:9000"
     environment:
@@ -65,10 +65,8 @@ services:
       - PATH=/peerjs
       - KEY=your-secret-key
       - ALLOW_DISCOVERY=true
-      - CORS_ORIGIN=http://localhost:3000,http://frontend:80  # CORS
+      - PROXY=1 
     restart: unless-stopped
-    volumes:
-      - ./peerjs-config.js:/app/server.js
     networks:
       - app-network
     healthcheck:
@@ -126,10 +124,8 @@ services:
       dockerfile: Dockerfile
     container_name: frontend-container
     environment:
-      - REACT_APP_PEERJS_HOST=${PEERJS_HOST:-localhost}
-      - REACT_APP_PEERJS_PORT=443  # Через nginx на 443 порту
-      - REACT_APP_PEERJS_PATH=/peerjs
-      - REACT_APP_PEERJS_SECURE=true
+      - VITE_API_URL=http://nginx/api  
+      - VITE_PEERJS_URL=/peerjs  
     expose:
       - "80"
     networks:
