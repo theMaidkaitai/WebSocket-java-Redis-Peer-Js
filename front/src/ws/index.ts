@@ -25,7 +25,7 @@ export default function initClient(roomsStore: RoomsStore, onCreateUser: () => v
                     if (onCreateUser) {
                         onCreateUser();
                     }
-                }, 1000); // Задержка 500ms
+                }, 1000); 
             }
 
 
