@@ -9,7 +9,7 @@ const decoder = new TextDecoder('utf-8');
 export default function initClient(roomsStore: RoomsStore, onCreateUser: () => void):Client {
 
         const client = new Client({
-        webSocketFactory: () => new SockJS (`ws://${window.location.host}/voice-ws`),  //('http://localhost:8080/voice-ws')
+        webSocketFactory: () => new SockJS (`http://${window.location.host}/voice-ws`),  //('http://localhost:8080/voice-ws')
         debug: function (str) {
             console.log(str);
         },
