@@ -29,17 +29,14 @@ const UserComponent = ({deleteUser}) => {
     return (
         <div>
             <div className="User-Container-Nick">
-                {user._inRoom && user._id === userIdInRoom  ? (
+                {user._inRoom && user._id === userId ? (
                     <>
                         {user._nick}
                         <img src={microIcon} alt="" className={"micro-icon"}/>
                         <img src={disconnectIcon} alt="" className={"disconnect-icon"} onClick={handleClick}/>
                     </>
-                ) 
-                : 
-                null
-                
-                }
+                ) :
+                 null}
             </div>
         </div>
     );
