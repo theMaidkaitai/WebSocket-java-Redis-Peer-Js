@@ -5,14 +5,15 @@ import {useContext} from "react";
 import {Context} from "../main.tsx";
 
 const decoder = new TextDecoder('utf-8');
-const {rooms} = useContext(Context)
 export default function initClient(roomsStore: RoomsStore, onCreateUser: () => void):Client {
+
     const client = new Client({
         webSocketFactory: () => new SockJS(`http://${window.location.host}/voice-ws`),
         debug: function (str) {
             console.log(str);
         },
         reconnectDelay: 5000,
+
         heartbeatIncoming: 4000,
         heartbeatOutgoing: 4000,
 
@@ -103,6 +104,7 @@ export default function initClient(roomsStore: RoomsStore, onCreateUser: () => v
 
             client.subscribe('/topic/room/updates', (message) => {
                 const updatedRooms = JSON.parse(message.body);
+                const {rooms} = useContext(Context)
                 rooms.setRooms(updatedRooms);
                 console.log("Обновление комнаты:", message.body);
             });
