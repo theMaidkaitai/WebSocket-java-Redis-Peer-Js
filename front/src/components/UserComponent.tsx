@@ -4,7 +4,7 @@ import "./styles/UserContainerStyles/UserComponent.css"
 import microIcon from "../assets/micro-icon.png"
 import disconnectIcon from "../assets/disconnect.png"
 
-const UserComponent = ({deleteUser, otherUser}) => {
+const UserComponent = ({deleteUser, userIdInRoom}) => {
 
     const {user, rooms} = useContext(Context)
     const userId: string | undefined = user.getId()
@@ -29,7 +29,7 @@ const UserComponent = ({deleteUser, otherUser}) => {
     return (
         <div>
             <div className="User-Container-Nick">
-                {user._inRoom && user._id === otherUser  ? (
+                {user._inRoom && user._id === userIdInRoom  ? (
                     <>
                         {user._nick}
                         <img src={microIcon} alt="" className={"micro-icon"}/>
@@ -37,7 +37,6 @@ const UserComponent = ({deleteUser, otherUser}) => {
                     </>
                 ) 
                 : 
-
                 null
                 
                 }
