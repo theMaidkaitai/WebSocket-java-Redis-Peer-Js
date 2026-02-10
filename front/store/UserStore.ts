@@ -32,12 +32,12 @@ export default class UserStore {
     }
 
     setNick(nick: string) {
-        this._nick = nick;
         localStorage.setItem("nick", nick);
     }
 
     getNick() {
-        return this._nick;
+        const nickUser = localStorage.getItem('nick')
+        return nickUser;
     }
 
     getRoomId() {

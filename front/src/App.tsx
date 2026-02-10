@@ -14,6 +14,11 @@ function App() {
     const stompClientRef = useRef<Client | null>(null);
     const { user, rooms } = useContext(Context);
 
+    const [localInRoom, setLocalInRoom] = useState<boolean>(false);
+    const [localRoomId, setLocalRoomId] = useState<string>('');
+    const [localNick, setLocalNick] = useState<string>(user._nick || '');
+
+
 
     function setNickUser(nick: string){
         if (nick.length > 16){

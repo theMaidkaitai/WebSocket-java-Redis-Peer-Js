@@ -12,6 +12,8 @@ const UserComponent = ({deleteUser}) => {
 
     const currentRoom = rooms.getRoomById(roomId)
 
+    const userNick = localStorage.getItem("nick")
+
     const handleClick = () => {
         user._inRoom = false;
         localStorage.removeItem("inRoom");
@@ -31,7 +33,7 @@ const UserComponent = ({deleteUser}) => {
             <div className="User-Container-Nick">
                 {user._inRoom && user._id === userId ? (
                     <>
-                        {user._nick}
+                        {userNick}
                         <img src={microIcon} alt="" className={"micro-icon"}/>
                         <img src={disconnectIcon} alt="" className={"disconnect-icon"} onClick={handleClick}/>
                     </>
