@@ -17,6 +17,11 @@ export default class UserStore {
         }
     }
 
+    private parseBoolean(value: string | null): boolean {
+        if (value === null) return false;
+        return value === "true" || value === "1" || value === "yes";
+    }
+
 
     getId() {
         let id = localStorage.getItem("id")
@@ -46,7 +51,7 @@ export default class UserStore {
     }
 
     getInRoom(): boolean {
-        return Boolean(localStorage.getItem("inRoom")) // ??
+        return this.parseBoolean(localStorage.getItem("inRoom"));
     }
 
     setInRoom(inRoom: boolean) {

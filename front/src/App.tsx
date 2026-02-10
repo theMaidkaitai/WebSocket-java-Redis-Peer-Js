@@ -106,6 +106,8 @@ function App() {
 
     useEffect(() => {
         user.loadStorage()
+        const savedInRoom = localStorage.getItem("inRoom");
+        const savedRoomId = localStorage.getItem("roomId");
         user.ensureUserId();
         setTimeout(() => {
             stompClientRef.current = initClient(rooms, () => {

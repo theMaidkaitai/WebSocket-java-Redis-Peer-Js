@@ -7,7 +7,9 @@ import {observer} from "mobx-react";
 import UserComponent from "./UserComponent.tsx";
 
 const UserContainerUsers = observer(({
+
     addUser, deleteUser, localInRoom, localRoomId, onJoinRoom, onLeaveRoom
+
 }) => {
     const {user, rooms} = useContext(Context);
 
@@ -22,6 +24,7 @@ const UserContainerUsers = observer(({
                 return;
             }
 
+
             const success = rooms.join(userId, roomId);
             user.setInRoom(true)
             addUser(userId, roomId);
@@ -29,11 +32,13 @@ const UserContainerUsers = observer(({
         }
     };
 
+
     const getUserRoomId = (): string | null => {
         const userId = user.getId();
         if (!userId) return null;
 
         const userRooms = rooms.getUserRoom(userId);
+        // @ts-ignore
         return userRooms?.length > 0 ? userRooms[0].id : null;
     };
 
@@ -72,7 +77,7 @@ const UserContainerUsers = observer(({
                                         <UserComponent
                                             key={userIdInRoom}
                                             deleteUser={deleteUser}
-                                            userIdInRoom={userIdInRoom}
+                                            userIdInRoom={userIdInRoom} 
                                             localInRoom={localInRoom}
                                             localRoomId={localRoomId}
                                             onLeaveRoom={onLeaveRoom}
