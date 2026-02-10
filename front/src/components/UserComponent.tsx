@@ -4,7 +4,7 @@ import "./styles/UserContainerStyles/UserComponent.css"
 import microIcon from "../assets/micro-icon.png"
 import disconnectIcon from "../assets/disconnect.png"
 
-const UserComponent = ({deleteUser, userIdInRoom}) => {
+const UserComponent = ({deleteUser}) => {
 
     const {user, rooms} = useContext(Context)
     const userId: string | undefined = user.getId()
