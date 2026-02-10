@@ -4,11 +4,13 @@ import "./styles/UserContainerStyles/UserComponent.css"
 import microIcon from "../assets/micro-icon.png"
 import disconnectIcon from "../assets/disconnect.png"
 
-const UserComponent = ({deleteUser}) => {
+const UserComponent = ({deleteUser, otherUser}) => {
 
     const {user, rooms} = useContext(Context)
     const userId: string | undefined = user.getId()
     const roomId: string | undefined = user.getRoomId()
+
+    const currentRoom = rooms.getRoomById(roomId)
 
     const handleClick = () => {
         user._inRoom = false;
@@ -27,13 +29,18 @@ const UserComponent = ({deleteUser}) => {
     return (
         <div>
             <div className="User-Container-Nick">
-                {user._inRoom && user._id === userId ? (
+                {user._inRoom && user._id === otherUser  ? (
                     <>
                         {user._nick}
                         <img src={microIcon} alt="" className={"micro-icon"}/>
                         <img src={disconnectIcon} alt="" className={"disconnect-icon"} onClick={handleClick}/>
                     </>
-                ) : null}
+                ) 
+                : 
+
+                null
+                
+                }
             </div>
         </div>
     );

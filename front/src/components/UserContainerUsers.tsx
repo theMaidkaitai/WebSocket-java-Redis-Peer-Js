@@ -42,34 +42,47 @@ const UserContainerUsers = observer(({addUser, deleteUser}) => {
 
     const currentUserRoomId = getUserRoomId();
 
-    return (
+
+
+       return (
         <div className="rooms-list">
-            {rooms.getRooms().map((room) => (
-                <div
-                    key={room.id}
-                    className={`Main-Users-Container ${currentUserRoomId === room.id ? 'active' : ''}`}
-
-                >
-                    <div className="User-Container">
-                        <div className="User-Header">
-                            <div className="User-Header-Name">
-                                <span className="room-title" onClick={() => handleSelectRoom(room.id)}>{room.name}</span>
-                                <img src={voiceIcon} alt="Voice" className="sound-logo"/>
+            {rooms.getRooms().map((room) => {
+                const roomUsers = room.users || [];
+                const isCurrentUserInRoom = currentUserRoomId === room.id;
+                
+                return (
+                    <div
+                        key={room.id}
+                        className={`Main-Users-Container ${isCurrentUserInRoom ? 'active' : ''}`}
+                    >
+                        <div className="User-Container">
+                            <div className="User-Header">
+                                <div className="User-Header-Name">
+                                    <span className="room-title" onClick={() => handleSelectRoom(room.id || '')}>
+                                        {room.name} ({roomUsers.length})
+                                    </span>
+                                    <img src={voiceIcon} alt="Voice" className="sound-logo"/>
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="User-Divider"></div>
+                            <div className="User-Divider"></div>
 
-                        <div className="User-Content">
-                            <div className="User-Header-Date">
-                                {currentUserRoomId === room.id && <UserComponent
-                                    deleteUser = {deleteUser}
-                                />}
+                            <div className="User-Content">
+                                <div className="User-Header-Date">
+                                    {/* Отображаем UserComponent для КАЖДОГО пользователя в комнате */}
+                                    {roomUsers.map(userIdInRoom => (
+                                        <UserComponent
+                                            key={userIdInRoom}
+                                            deleteUser={deleteUser}
+                                            otherUser={userIdInRoom}
+                                        />
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </div>
     );
 });
