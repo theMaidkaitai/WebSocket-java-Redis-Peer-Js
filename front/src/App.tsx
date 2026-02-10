@@ -16,7 +16,6 @@ function App() {
 
     const [localInRoom, setLocalInRoom] = useState<boolean>(false);
     const [localRoomId, setLocalRoomId] = useState<string>('');
-    const [localNick, setLocalNick] = useState<string>(user._nick || '');
 
 
 
@@ -31,6 +30,8 @@ function App() {
     }
 
     function clearData () {
+        localStorage.removeItem('id')
+        localStorage.removeItem("nick")
         localStorage.removeItem("roomIn");
         localStorage.removeItem("roomId");
         user.setInRoom(false);
@@ -104,6 +105,7 @@ function App() {
     }
 
     useEffect(() => {
+        user.loadStorage()
         user.ensureUserId();
         setTimeout(() => {
             stompClientRef.current = initClient(rooms, () => {
@@ -113,7 +115,7 @@ function App() {
             setTimeout(() => {
                 getAllRoomsUsers();
             }, 2000);
-            console.log("USER IN ROOM?", user._inRoom)
+            console.log("USER IN ROOM?", user.getInRoom)
             console.log("USER ID ROOOOM:", user.getRoomId())
         }, 1000);
     }, []);
@@ -173,20 +175,42 @@ function App() {
     }
 
 
+    const handleJoinRoom = (roomId: string) => {
+        setLocalInRoom(true);
+        setLocalRoomId(roomId);
+        localStorage.setItem("inRoom", "true");
+        localStorage.setItem("roomId", roomId);
+    };
+
+    const handleLeaveRoom = () => {
+        setLocalInRoom(false);
+        setLocalRoomId('');
+        localStorage.removeItem("inRoom");
+        localStorage.removeItem("roomId");
+    };
+
+
   return (
     <div className="App-main-container">
 
 
         <div className="App-main">
-            <UserContainerUsers addUser={addUser} deleteUser = {removeUser} />
+            <UserContainerUsers 
+                addUser={addUser} 
+                deleteUser = {removeUser}
+                localInRoom={localInRoom}
+                localRoomId={localRoomId}
+                onJoinRoom={handleJoinRoom}
+                onLeaveRoom={handleLeaveRoom}
+            />
         </div>
 
         <div className={"NickContainer"}>
             Ник:
             {
-                typeof user._nick === "string"
+                typeof user.getNick === "string"
                 ?
-                    ` ${user._nick}`
+                    ` ${user.getNick}`
                     :
                     "Не указан"
             }

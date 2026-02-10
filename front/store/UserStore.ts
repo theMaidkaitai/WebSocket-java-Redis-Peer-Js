@@ -3,11 +3,6 @@ import { GenerateIdService} from "../src/ws/GenerateIdService.ts";
 
 
 export default class UserStore {
-    _id: string | undefined;
-    _nick: string | undefined = undefined;
-    _inRoom: boolean = false;
-    _roomId: string | undefined;
-
     constructor() {
         makeAutoObservable(this)
         this.loadStorage();
@@ -15,19 +10,20 @@ export default class UserStore {
     }
 
     public ensureUserId(): void {
-        if (!this._id || this._id.trim() === "") {
-            this._id = GenerateIdService.generateUserId();
-            localStorage.setItem("id", this._id);
+        let id = localStorage.getItem("id")
+        if (!id || id.trim() === "") {
+            id = GenerateIdService.generateUserId();
+            localStorage.setItem("id", id);
         }
     }
 
 
     getId() {
-        return this._id;
+        let id = localStorage.getItem("id")
+        return id;
     }
 
     setId(id: string) {
-        this._id = id;
         localStorage.setItem("id", id);
     }
 
@@ -41,47 +37,26 @@ export default class UserStore {
     }
 
     getRoomId() {
-        return this._roomId;
+        const roomId = localStorage.getItem("roomId")
+        return roomId;
     }
 
     setRoomId(roomId: string) {
-        this._roomId = roomId;
         localStorage.setItem("roomId", roomId);
-        if (roomId === this._id) {
-            console.error("ОШИБКА: В setRoomId передается ID пользователя вместо ID комнаты!");
-        }
     }
 
     getInRoom(): boolean {
-        return this._inRoom;
+        return Boolean(localStorage.getItem("inRoom")) // ??
     }
 
     setInRoom(inRoom: boolean) {
         localStorage.setItem("inRoom", String(inRoom))
-        this._inRoom = inRoom;
     }
 
-    private loadStorage(): void {
+    public loadStorage(): void {
         const savedId = localStorage.getItem("id");
-        if (savedId) {
-            this._id = savedId;
-        }
-
         const savedNick = localStorage.getItem("nick");
-        if (savedNick) {
-            this._nick = savedNick;
-            console.log("Ник загружен из localStorage:", savedNick);
-        }
-
         const savedInRoom = localStorage.getItem("inRoom");
-        if (savedInRoom) {
-            this._inRoom = savedInRoom === "true";
-        }
-
         const savedRoomId = localStorage.getItem("roomId");
-        if (savedRoomId) {
-            this._roomId = savedRoomId;
-        }
-
     }
 }

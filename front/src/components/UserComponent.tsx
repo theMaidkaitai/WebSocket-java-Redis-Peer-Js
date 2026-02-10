@@ -4,18 +4,22 @@ import "./styles/UserContainerStyles/UserComponent.css"
 import microIcon from "../assets/micro-icon.png"
 import disconnectIcon from "../assets/disconnect.png"
 
-const UserComponent = ({deleteUser}) => {
+const UserComponent = ({deleteUser, userIdInRoom, localInRoom, localRoomId, onLeaveRoom, isCurrentUserInThisRoom}) => {
 
     const {user, rooms} = useContext(Context)
     const userId: string | undefined = user.getId()
     const roomId: string | undefined = user.getRoomId()
+
+
+    const ForCurrentUser = userIdInRoom === userId;
+    const isCurrentUserInAnyRoom = localInRoom;
 
     const currentRoom = rooms.getRoomById(roomId)
 
     const userNick = localStorage.getItem("nick")
 
     const handleClick = () => {
-        user._inRoom = false;
+        user.setInRoom(false);
         localStorage.removeItem("inRoom");
         localStorage.removeItem("roomId");
         if (!userId || !roomId) {
@@ -26,12 +30,12 @@ const UserComponent = ({deleteUser}) => {
 
     }
 
-
+    const showControls = ForCurrentUser && isCurrentUserInAnyRoom;
 
     return (
         <div>
             <div className="User-Container-Nick">
-                {user._inRoom && user._id === userId ? (
+                {showControls  ? (
                     <>
                         {userNick}
                         <img src={microIcon} alt="" className={"micro-icon"}/>
