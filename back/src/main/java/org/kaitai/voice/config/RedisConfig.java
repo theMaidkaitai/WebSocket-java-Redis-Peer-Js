@@ -17,7 +17,7 @@ public class RedisConfig {
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
         config.setHostName("155.212.236.186");
         config.setPort(6379);
-        config.setPassword("redis123");  // ← добавьте пароль если есть
+        config.setPassword("redis123");  
 
         return new LettuceConnectionFactory(config);
     }
