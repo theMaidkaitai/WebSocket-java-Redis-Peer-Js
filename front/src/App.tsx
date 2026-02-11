@@ -14,8 +14,13 @@ function App() {
     const stompClientRef = useRef<Client | null>(null);
     const { user, rooms } = useContext(Context);
 
-    const [localInRoom, setLocalInRoom] = useState<boolean>(false);
-    const [localRoomId, setLocalRoomId] = useState<string>('');
+    const [localInRoom, setLocalInRoom] = useState<boolean>(() => {
+        return localStorage.getItem("inRoom") === "true";
+    });
+
+    const [localRoomId, setLocalRoomId] = useState<string>(() => {
+        return localStorage.getItem("roomId") || '';
+    });
 
 
 
@@ -109,6 +114,19 @@ function App() {
         const savedInRoom = localStorage.getItem("inRoom");
         const savedRoomId = localStorage.getItem("roomId");
         user.ensureUserId();
+
+        if (localInRoom && localRoomId) {
+            setTimeout(() => {
+                if (stompClientRef.current?.connected) {
+                    getAllRoomsUsers();
+                    stompClientRef.current.publish({
+                        destination: "/voice/get/room/users",
+                        body: JSON.stringify({ roomId: localRoomId }),
+                        headers: { 'content-type': 'application/json' }
+                    });
+                }
+            }, 2000);
+        }
         setTimeout(() => {
             stompClientRef.current = initClient(rooms, () => {
                 createUser();
@@ -201,7 +219,6 @@ function App() {
                 addUser={addUser} 
                 deleteUser = {removeUser}
                 localInRoom={localInRoom}
-                localRoomId={localRoomId}
                 onJoinRoom={handleJoinRoom}
                 onLeaveRoom={handleLeaveRoom}
             />

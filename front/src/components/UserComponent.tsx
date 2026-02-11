@@ -4,7 +4,7 @@ import "./styles/UserContainerStyles/UserComponent.css"
 import microIcon from "../assets/micro-icon.png"
 import disconnectIcon from "../assets/disconnect.png"
 
-const UserComponent = ({deleteUser, userIdInRoom, localInRoom, localRoomId, onLeaveRoom, isCurrentUserInThisRoom}) => {
+const UserComponent = ({deleteUser, userIdInRoom, localInRoom, onLeaveRoom}) => {
 
     const {user, rooms} = useContext(Context)
     const userId: string | undefined = user.getId()
@@ -15,7 +15,7 @@ const UserComponent = ({deleteUser, userIdInRoom, localInRoom, localRoomId, onLe
     const isCurrentUserInAnyRoom = localInRoom;
 
     const currentRoom = rooms.getRoomById(roomId)
-
+    const isCurrentUser = userIdInRoom === roomId;
     const userNick = localStorage.getItem("nick")
 
     const handleClick = () => {
@@ -34,15 +34,22 @@ const UserComponent = ({deleteUser, userIdInRoom, localInRoom, localRoomId, onLe
 
     return (
         <div>
-            <div className="User-Container-Nick">
-                {showControls  ? (
-                    <>
-                        {userNick}
-                        <img src={microIcon} alt="" className={"micro-icon"}/>
-                        <img src={disconnectIcon} alt="" className={"disconnect-icon"} onClick={handleClick}/>
-                    </>
-                ) :
-                 null}
+            <div className={`user-nickname ${isCurrentUser ? 'current-user' : 'other-user'}`}>
+                <span className="user-name">
+                    {userNick} {isCurrentUser ? '(Вы)' : ''}
+                </span>
+                
+                {isCurrentUser && localInRoom && (
+                    <div className="user-controls">
+                        <img src={microIcon} alt="Микрофон" className="micro-icon"/>
+                        <img 
+                            src={disconnectIcon} 
+                            alt="Покинуть комнату" 
+                            className="disconnect-icon" 
+                            onClick={handleClick}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

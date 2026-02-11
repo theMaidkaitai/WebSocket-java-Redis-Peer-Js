@@ -8,7 +8,7 @@ import UserComponent from "./UserComponent.tsx";
 
 const UserContainerUsers = observer(({
 
-    addUser, deleteUser, localInRoom, localRoomId, onJoinRoom, onLeaveRoom
+    addUser, deleteUser, localInRoom,  onJoinRoom, onLeaveRoom
 
 }) => {
     const {user, rooms} = useContext(Context);
@@ -61,9 +61,9 @@ const UserContainerUsers = observer(({
                                     <span 
                                         className="room-title" 
                                         onClick={() => handleSelectRoom(room.id)}
-                                        style={{ cursor: localInRoom ? 'not-allowed' : 'pointer' }}
+                                        style={{ cursor: localInRoom && !isCurrentUserInRoom ? 'not-allowed' : 'pointer' }}
                                     >
-                                        {room.name} ({roomUsers.length})
+                                        {room.name} ({roomUsers.length}/{room.max_people || 3})
                                     </span>
                                     <img src={voiceIcon} alt="Voice" className="sound-logo"/>
                                 </div>
@@ -73,17 +73,20 @@ const UserContainerUsers = observer(({
 
                             <div className="User-Content">
                                 <div className="User-Header-Date">
-                                    {roomUsers.map(userIdInRoom => (
-                                        <UserComponent
-                                            key={userIdInRoom}
-                                            deleteUser={deleteUser}
-                                            userIdInRoom={userIdInRoom} 
-                                            localInRoom={localInRoom}
-                                            localRoomId={localRoomId}
-                                            onLeaveRoom={onLeaveRoom}
-                                            isCurrentUserInThisRoom={isCurrentUserInRoom}
-                                        />
-                                    ))}
+                                    {/* Отрисовываем ВСЕХ пользователей в комнате */}
+                                    {roomUsers.length > 0 ? (
+                                        roomUsers.map(userIdInRoom => (
+                                            <UserComponent
+                                                key={userIdInRoom}
+                                                deleteUser={deleteUser}
+                                                userIdInRoom={userIdInRoom}
+                                                localInRoom={localInRoom && isCurrentUserInRoom}
+                                                onLeaveRoom={onLeaveRoom}
+                                            />
+                                        ))
+                                    ) : (
+                                        <div className="no-users">Нет пользователей</div>
+                                    )}
                                 </div>
                             </div>
                         </div>
