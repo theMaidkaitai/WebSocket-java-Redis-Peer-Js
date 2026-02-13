@@ -15,7 +15,7 @@ public class RoomEntity implements Serializable {
     private String id;
     private String name;
     private Integer maxPeople = 3;
-    private Set<String> usersId = new  HashSet<>();
+    private Set<String> usersId = new HashSet<>();
 
 
     public RoomEntity(String id, String name) {

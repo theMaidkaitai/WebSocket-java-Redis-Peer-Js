@@ -49,6 +49,7 @@ export default class RoomsStore {
         return this._rooms.find(room => room.id === id);
     }
 
+
     getRooms(): any[] {
         return toJS(this._rooms);
     }

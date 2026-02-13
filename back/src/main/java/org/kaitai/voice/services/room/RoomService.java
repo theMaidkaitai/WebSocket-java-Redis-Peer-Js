@@ -2,12 +2,14 @@ package org.kaitai.voice.services.room;
 
 
 import org.kaitai.voice.models.RoomEntity;
+import org.kaitai.voice.models.UserEntity;
 import org.kaitai.voice.repository.RoomRepository;
 import org.kaitai.voice.services.room.dto.RoomDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -46,6 +48,12 @@ public class RoomService {
         room.removeUser(userId);
         roomRepository.save(room);
         return userId;
+    }
+
+    public Set<String> getUsersInRoom (String roomId) throws Exception { // вызывать каждый раз при отрисовке сделай так ага
+        RoomEntity room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new Exception("Комната не найдена"));
+        return room.getUsersId();
     }
 
 

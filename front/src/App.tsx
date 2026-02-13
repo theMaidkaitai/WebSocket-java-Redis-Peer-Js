@@ -68,17 +68,20 @@ function App() {
         }
     }
 
-    function getAllRoomsUsers() {
+    function getAllRoomsUsers(roomId: string | undefined) {
         try {
             if (!stompClientRef.current) {
                 console.log("WebSocket not ready");
                 return;
             }
 
+            const date = {
+                id: roomId
+            }
 
             stompClientRef.current.publish({
                 destination: "/voice/get/all/rooms/users",
-                body: "{}",
+                body: JSON.stringify(date),
                 headers: { 'content-type': 'application/json' }
             });
 
@@ -118,7 +121,6 @@ function App() {
         if (localInRoom && localRoomId) {
             setTimeout(() => {
                 if (stompClientRef.current?.connected) {
-                    getAllRoomsUsers();
                     stompClientRef.current.publish({
                         destination: "/voice/get/room/users",
                         body: JSON.stringify({ roomId: localRoomId }),
@@ -133,7 +135,14 @@ function App() {
             });
 
             setTimeout(() => {
-                getAllRoomsUsers();
+                const room = rooms.getRooms();
+                room.forEach(room => {
+                    console.log('ID комнаты:', room.id);
+                    console.log('Название:', room.name);
+                    console.log('Пользователи:', room.users);
+
+                    getAllRoomsUsers(room.id);
+                });
             }, 2000);
             console.log("USER IN ROOM?", user.getInRoom)
             console.log("USER ID ROOOOM:", user.getRoomId())
