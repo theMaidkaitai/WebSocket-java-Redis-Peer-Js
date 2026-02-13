@@ -75,14 +75,12 @@ function App() {
                 return;
             }
 
-            const date = {
-                id: roomId
-            }
+
 
             stompClientRef.current.publish({
                 destination: "/voice/get/all/rooms/users",
-                body: JSON.stringify(date),
-                headers: { 'content-type': 'application/json' }
+                body: JSON.stringify(roomId),
+                headers: { 'content-type': 'text/plain' }
             });
 
             console.log("Запрос по комнатам + юзерам отправлен!");

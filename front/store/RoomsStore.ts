@@ -49,6 +49,14 @@ export default class RoomsStore {
         return this._rooms.find(room => room.id === id);
     }
 
+    setUsers(roomId: string, userIds: string[]): void {
+        const roomIndex = this._rooms.findIndex(room => room.id === roomId);
+        this._rooms[roomIndex] = {
+            ...this._rooms[roomIndex],
+            users: userIds
+        };
+        this._rooms = [...this._rooms];
+    }
 
     getRooms(): any[] {
         return toJS(this._rooms);

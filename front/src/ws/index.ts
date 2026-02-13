@@ -1,8 +1,6 @@
 import {Client} from "@stomp/stompjs";
 import SockJS from 'sockjs-client';
 import type RoomsStore from "../../store/RoomsStore.ts";
-import {useContext} from "react";
-import {Context} from "../main.tsx";
 
 const decoder = new TextDecoder('utf-8');
 export default function initClient(roomsStore: RoomsStore, onCreateUser: () => void):Client {
@@ -28,31 +26,24 @@ export default function initClient(roomsStore: RoomsStore, onCreateUser: () => v
 
             client.subscribe("/topic/room/users/all", (message) => {
                 try {
-                    let data;
-                    const text = decoder.decode(message.binaryBody)
-                    data = JSON.parse(text);
+                    // Декодируем сообщение
+                    const text = decoder.decode(message.binaryBody);
+                    const response = JSON.parse(text);
 
-                    if (data && data.data && Array.isArray(data.data)) {
-                        data.data.forEach(roomData => {
-                            console.log(`Комната: ${roomData.name}, пользователей: ${roomData.users?.length || 0}`);
+                    console.log("📥 Получен ответ от сервера:", response);
 
-                            const room = roomsStore.getRoomById(roomData.roomId);
-                            if (room) {
-                                room.users = roomData.users?.map(user => user.id) || [];
-                                console.log(`Обновлены пользователи комнаты ${roomData.roomName}:`, room.users);
-                            }
-                        });
+                    if (response.roomId && response.users) {
+                        const { roomId, users } = response;
+                        roomsStore.setUsers(roomId, users);
+                        console.log(`✅ Обновлены пользователи комнаты ${roomId}:`, users);
                     }
 
-                    data.data.forEach(roomData => {
-                        console.log("Room data:", roomData.name);
-                        roomData.users.forEach(user => {
-                            console.log("user", user.id);
-                        })
-                    })
-                }
-                catch (error) {
-                    console.log(error);
+                    response.forEach(roomData => {
+                        roomsStore.setUsers(roomData.roomId, roomData.users);
+                    });
+
+                } catch (error) {
+                    console.error("❌ Ошибка обработки сообщения:", error);
                 }
             });
 

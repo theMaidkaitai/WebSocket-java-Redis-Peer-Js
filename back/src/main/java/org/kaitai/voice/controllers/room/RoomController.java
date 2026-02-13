@@ -88,13 +88,13 @@ public class RoomController {
         }
     }
 
-    @MessageMapping("/get/users/room")
+    @MessageMapping("/voice/get/all/rooms/users")
     @SendTo("/topic/room/users/all")
     public ResponseEntity<String> getUsersInRoom(@RequestBody String roomId) {
         try {
             Set<String> result = roomService.getUsersInRoom(roomId);
-            messagingTemplate.convertAndSend("/topic/public",
-                    ResponseEntity.status(HttpStatus.CREATED).body(result.toString()));
+            messagingTemplate.convertAndSend("/topic/room/users/all",
+                    ResponseEntity.status(HttpStatus.CREATED).body(result));
 
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(result.toString());
         }
