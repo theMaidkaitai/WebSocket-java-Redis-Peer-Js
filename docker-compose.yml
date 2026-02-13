@@ -65,6 +65,8 @@ services:
       context: ./peerjs
       dockerfile: Dockerfile
     container_name: peerjs-container
+    expose:
+      - "9000"
     networks:
       - app-network
     restart: unless-stopped
