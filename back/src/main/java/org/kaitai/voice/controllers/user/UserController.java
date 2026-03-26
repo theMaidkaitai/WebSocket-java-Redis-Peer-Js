@@ -1,8 +1,6 @@
 package org.kaitai.voice.controllers.user;
 
 
-import org.kaitai.voice.controllers.user.dto.UserDeleteDto;
-import org.kaitai.voice.models.RoomEntity;
 import org.kaitai.voice.models.UserEntity;
 import org.kaitai.voice.repository.RoomRepository;
 import org.kaitai.voice.repository.UserRepository;
@@ -36,9 +34,9 @@ public class UserController {
 
     @MessageMapping("/create/user")
     @SendTo("/topic/public")
-    public ResponseEntity<UserEntity> createUser(@RequestBody String id) {
+    public ResponseEntity<UserEntity> createUser() {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(id));
+            return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser());
         }
         catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
@@ -60,6 +58,5 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
-
 
 }

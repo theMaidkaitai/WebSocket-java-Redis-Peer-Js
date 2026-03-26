@@ -1,6 +1,7 @@
 package org.kaitai.voice.models;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Data
 @RedisHash("room")
+@NoArgsConstructor
 public class RoomEntity implements Serializable {
 
     private String id;
@@ -23,29 +25,12 @@ public class RoomEntity implements Serializable {
         this.name = name;
     }
 
-    public RoomEntity() {
-    }
     public void pushUser(String userId) {
         usersId.add(userId);
     }
+
     public void removeUser(String userId) {
         usersId.remove(userId);
     }
 
-
-    public String getId() {
-        return id;
-    }
-
-    public Integer getMaxPeople() {
-        return maxPeople;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Set<String> getUsersId() {
-        return usersId;
-    }
 }

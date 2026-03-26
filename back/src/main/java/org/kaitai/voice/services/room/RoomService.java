@@ -33,7 +33,7 @@ public class RoomService {
     }
 
 
-    public String addUser (String userId, String roomId) throws Exception {
+    public String addUser (String userId, String roomId) throws Exception { // TODO: refactor
         RoomEntity room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new Exception("Комната не найдена"));
         room.pushUser(userId);
@@ -42,7 +42,7 @@ public class RoomService {
     }
 
 
-    public String deleteUser (String userId, String roomId) throws Exception {
+    public String deleteUser (String userId, String roomId) throws Exception { // TODO: refactor
         RoomEntity room = roomRepository.findById(roomId) // находим руму из которой надо удалить
                 .orElseThrow(() -> new Exception("Комната не найдена"));
         room.removeUser(userId);
@@ -50,10 +50,10 @@ public class RoomService {
         return userId;
     }
 
-    public Set<String> getUsersInRoom (String roomId) throws Exception { // вызывать каждый раз при отрисовке сделай так ага
+    public Set<String> getUsersInRoom (String roomId) throws Exception { // TODO: refactor
         RoomEntity room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new Exception("Комната не найдена"));
-        return room.getUsersId();
+        return room.getUsersId(); // TODO: refactor
     }
 
 

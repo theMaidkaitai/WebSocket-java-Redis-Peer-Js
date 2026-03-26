@@ -1,11 +1,10 @@
 package org.kaitai.voice.controllers.room;
 
 
-import org.kaitai.voice.controllers.room.dto.AddUserDto;
-import org.kaitai.voice.controllers.user.dto.UserDeleteDto;
 import org.kaitai.voice.models.RoomEntity;
 import org.kaitai.voice.services.room.RoomService;
 import org.kaitai.voice.services.room.dto.RoomDto;
+import org.kaitai.voice.services.room.dto.RoomIdsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +54,7 @@ public class RoomController {
 
     @MessageMapping("/add/user/room")
     @SendTo("/topic/public")
-    public ResponseEntity<String> addUserToRoom(@RequestBody AddUserDto dto) {
+    public ResponseEntity<String> addUserToRoom(@RequestBody RoomIdsDto dto) {
         try {
             String result = roomService.addUser(dto.userId(), dto.roomId());
             messagingTemplate.convertAndSend("/topic/public",
@@ -73,9 +72,9 @@ public class RoomController {
 
     @MessageMapping("/delete/user/room")
     @SendTo("/topic/public")
-    public ResponseEntity<String> deleteUser(@RequestBody UserDeleteDto userDeleteDto) {
+    public ResponseEntity<String> deleteUser(@RequestBody RoomIdsDto userDeleteDto) {
         try {
-            String result = roomService.addUser(userDeleteDto.userId(), userDeleteDto.roomId());
+            String result = roomService.deleteUser(userDeleteDto.userId(), userDeleteDto.roomId());
             messagingTemplate.convertAndSend("/topic/public",
                     ResponseEntity.status(HttpStatus.CREATED).body(result));
 
@@ -88,20 +87,22 @@ public class RoomController {
         }
     }
 
-    @MessageMapping("/voice/get/all/rooms/users")
-    @SendTo("/topic/room/users/all")
-    public ResponseEntity<String> getUsersInRoom(@RequestBody String roomId) {
-        try {
-            Set<String> result = roomService.getUsersInRoom(roomId);
-            messagingTemplate.convertAndSend("/topic/room/users/all",
-                    ResponseEntity.status(HttpStatus.CREATED).body(result));
+//    @MessageMapping("/voice/get/all/rooms/users")
+//    @SendTo("/topic/room/users/all")
+//    public ResponseEntity<String> getUsersInRoom(@RequestBody String roomId) {
+//        try {
+//            Set<String> result = roomService.getUsersInRoom(roomId);
+//            messagingTemplate.convertAndSend("/topic/room/users/all",
+//                    ResponseEntity.status(HttpStatus.CREATED).body(result));
+//
+//            return ResponseEntity.status(HttpStatus.ACCEPTED).body(result.toString());
+//        }
+//        catch (IllegalArgumentException e) {
+//            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(result.toString());
-        }
-        catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 }

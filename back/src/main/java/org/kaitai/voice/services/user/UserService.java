@@ -18,14 +18,12 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private RoomRepository roomRepository;
-
-    public UserEntity createUser(String id) throws Exception {
-        UserEntity user = new UserEntity(id);
-        userRepository.save(user);
+    public UserEntity createUser() throws Exception {
+        UserEntity user = new UserEntity();
         return user;
     }
+
+
 
     public String GetUser(String id) throws Exception {
         UserEntity user = userRepository.findById(id)
@@ -46,19 +44,6 @@ public class UserService {
 
 
 
-//    public List<UserEntity> getUsersInRoom(String roomId) {
-//        RoomEntity room = roomRepository.findById(roomId)
-//                .orElseThrow(() -> new RuntimeException("Room not found: " + roomId));
-//        return getUsersByIds(new ArrayList<>(room.getUsersId()));
-//    }
-//
-//    public UserEntity getUsersInRoom(String roomId, String userId) {
-//        RoomEntity room = roomRepository.findById(roomId)
-//                .orElseThrow(() -> new RuntimeException("Room not found: " + roomId));
-//        UserEntity user = roomRepository.findById(roomId)
-//                .orElseThrow(() -> new RuntimeException("Room not found: " + roomId));
-//        return;
-//    }
 
 
 
