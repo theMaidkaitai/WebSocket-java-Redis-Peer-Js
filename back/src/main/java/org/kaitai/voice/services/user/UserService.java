@@ -20,9 +20,16 @@ public class UserService {
 
     public UserEntity createUser() throws Exception {
         UserEntity user = new UserEntity();
+        userRepository.save(user);
         return user;
     }
 
+    public Boolean checkUser(String id) throws Exception {
+        if (userRepository.findById(id).isPresent()) {
+            return true;
+        }
+        return false;
+    }
 
 
     public String GetUser(String id) throws Exception {

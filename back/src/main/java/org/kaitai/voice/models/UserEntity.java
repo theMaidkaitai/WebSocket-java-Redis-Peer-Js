@@ -11,14 +11,13 @@ import java.util.UUID;
 public class UserEntity {
 
     private String id;
-
+    private String nick;
+    private String roomId;
 
     public UserEntity() {
         this.id = UUID.randomUUID().toString();
+        this.nick = "Guest";
     }
 
 
-    public String getId() {
-        return id;
-    }
 }

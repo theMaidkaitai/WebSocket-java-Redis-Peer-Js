@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.RedisHash;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 
 @Data
@@ -20,8 +21,8 @@ public class RoomEntity implements Serializable {
     private Set<String> usersId = new HashSet<>();
 
 
-    public RoomEntity(String id, String name) {
-        this.id = id;
+    public RoomEntity(String name) {
+        this.id = UUID.randomUUID().toString();
         this.name = name;
     }
 

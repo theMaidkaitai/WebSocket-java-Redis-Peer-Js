@@ -9,6 +9,7 @@ import org.kaitai.voice.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -33,10 +34,26 @@ public class UserController {
 
 
     @MessageMapping("/create/user")
-    @SendTo("/topic/public")
-    public ResponseEntity<UserEntity> createUser() {
+    @SendTo("/topic/users/register")
+    public UserEntity createUser() {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser());
+            UserEntity user = userService.createUser();
+            System.out.println("User created: " + user);
+            return user;
+        }
+        catch (IllegalArgumentException e) {
+            throw new MessagingException(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @MessageMapping("/get/user")
+    @SendTo("/topic/users/get/one")
+    public ResponseEntity<String> getUser(@RequestBody String id) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(userService.GetUser(id));
         }
         catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
@@ -45,15 +62,15 @@ public class UserController {
         }
     }
 
-
-    @MessageMapping("/get/user")
-    @SendTo("/topic/public")
-    public ResponseEntity<String> getUser(@RequestBody String id) {
+    @MessageMapping("/get/check/user")
+    @SendTo("/topic/users/get/check")
+    public Boolean checkUser(@RequestBody String id) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(userService.GetUser(id));
+            Boolean check = userService.checkUser(id);
+            return check;
         }
         catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            throw new MessagingException(e.getMessage());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

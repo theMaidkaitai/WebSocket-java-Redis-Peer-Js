@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AcceptButtonComponent = () => {
+const LoadingComponent = () => {
     return (
         <div>
 
@@ -8,4 +8,4 @@ const AcceptButtonComponent = () => {
     );
 };
 
-export default AcceptButtonComponent;
+export default LoadingComponent;

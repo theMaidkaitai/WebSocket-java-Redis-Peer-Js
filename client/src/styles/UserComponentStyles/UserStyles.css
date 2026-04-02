@@ -1,0 +1,66 @@
+.user-component {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    margin: 2px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    position: relative;
+}
+
+.user-component:hover {
+    background-color: #2a2e35;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #949ba4;
+    transition: color 0.2s;
+}
+
+.user-component:hover .user-name {
+    color: #dbdee1;
+}
+
+.user-status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-status.online {
+    background-color: #23a55a;
+}
+
+.user-status.offline {
+    background-color: #80848e;
+}
+
+.user-status.idle {
+    background-color: #f0b232;
+}
+
+.user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: #2a2e35;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #dbdee1;
+}
+
+.user-component.active {
+    background-color: #2a2e35;
+}
+
+.user-component.active .user-name {
+    color: #ffffff;
+}
