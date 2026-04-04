@@ -7,15 +7,16 @@ import { observer } from 'mobx-react-lite';
 import {connectToRoom, disconnectUser, getRooms, getUsersInRoom} from "../ws/rooms/roomsWsApi.ts";
 import {getCookie} from "../ws/getCookie.ts";
 import disconnectIcon from "../assets/disconnectIcon.png"
+import {UserData} from "../store/RoomStore.ts";
 
 
 interface ChannelComponentProps {
     id?: string;
     title?: string;
-    usersId?: string[];
+    users?: UserData[];
 }
 
-const ChannelComponent = observer(({id, title, usersId}: ChannelComponentProps) => {
+const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
     const { rooms } = useContext(Context);
 
     const handleJoin = async () => {

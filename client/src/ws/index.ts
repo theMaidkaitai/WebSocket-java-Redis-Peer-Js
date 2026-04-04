@@ -111,7 +111,7 @@ export default function initClient(roomsStore: RoomStore, onCreateUser: () => vo
                             id: room.id,
                             name: room.name,
                             maxPeople: room.maxPeople,
-                            usersId: room.usersId || []
+                            users: room.users || []
                         }));
 
 
@@ -153,7 +153,7 @@ export default function initClient(roomsStore: RoomStore, onCreateUser: () => vo
                         id: date.id,
                         name: date.name,
                         maxPeople: date.maxPeople,
-                        usersId: date.usersId || []
+                        users: date.users || []
                     };
 
 

@@ -7,6 +7,7 @@ import {Context} from "../../main.tsx";
 interface CreateRoomModalProps {
     isOpen: boolean;
     onClose: () => void;
+    onCreate: (roomName: string) => void;
 }
 
 
