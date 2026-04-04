@@ -68,20 +68,7 @@ public class RoomController {
     @SendTo("/topic/rooms/user/action/connect")
     public void addUserToRoom(@RequestBody RoomIdsDto dto) {
         try {
-            UserEntity user = userRepository.findById(dto.userId())
-                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-            if (user.getRoomId() != null && !user.getRoomId().equals(dto.roomId())) {
-                String oldRoomId = user.getRoomId();
-                RoomEntity oldRoom = roomRepository.findById(oldRoomId)
-                        .orElseThrow(() -> new Exception("Старая комната не найдена"));
-                oldRoom.removeUser(dto.userId());
-                roomRepository.save(oldRoom);
-                System.out.println("✅ User removed from old room: " + oldRoomId);
-            }
-
             roomService.addUser(dto.userId(), dto.roomId());
-
             List<RoomEntity> allRooms = roomService.getRooms();
 
             messagingTemplate.convertAndSend("/topic/rooms/get/all", allRooms);
