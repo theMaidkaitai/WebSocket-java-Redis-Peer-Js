@@ -51,12 +51,6 @@ export async function connectToRoom (userId: string, roomId: string) {
             return;
         }
 
-        const data = {
-            userId: userId,
-            roomId: roomId,
-        }
-
-
         stompClient.publish({
             destination: "/voice/rooms/user/action/connect",
             headers: { 'content-type': 'application/json' },
@@ -87,6 +81,22 @@ export async function getUsersInRoom (roomId: string) {
     }
 }
 
+export function disconnectUser(userId: string, roomId: string) {
+    try {
+        if (!stompClient) {
+            console.log("WebSocket not ready")
+            return;
+        }
+        stompClient.publish({
+            destination: "/voice/rooms/delete/user",
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({userId, roomId})
+        })
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
 
 // export function checkUser(id: string, callback: (exists: boolean) => void) {
 //     try {

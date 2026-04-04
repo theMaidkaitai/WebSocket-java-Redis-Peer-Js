@@ -4,9 +4,10 @@ import "../styles/ChannelComponentStyles/ChannelStyles.css"
 import UserComponent from "./UserComponent.tsx";
 import {Context} from "../main.tsx";
 import { observer } from 'mobx-react-lite';
-import {connectToRoom, getRooms, getUsersInRoom} from "../ws/rooms/roomsWsApi.ts";
+import {connectToRoom, disconnectUser, getRooms, getUsersInRoom} from "../ws/rooms/roomsWsApi.ts";
 import {getCookie} from "../ws/getCookie.ts";
-import type {UserData} from "../store/RoomStore.ts";
+import disconnectIcon from "../assets/disconnectIcon.png"
+
 
 interface ChannelComponentProps {
     id?: string;
@@ -24,6 +25,12 @@ const ChannelComponent = observer(({id, title, usersId}: ChannelComponentProps) 
 
     };
 
+    const handleDisconnect = async () => {
+        const userId = getCookie("id")
+        disconnectUser(userId, id)
+        //await getUsersInRoom(id);
+    }
+
     useEffect(() => {
         console.log("roomId: " + id);
         const init = async () => {
@@ -37,11 +44,18 @@ const ChannelComponent = observer(({id, title, usersId}: ChannelComponentProps) 
     const users = room?.users || [];
 
 
+    const userId = getCookie("id")
+    const isUserInRoom = rooms.isUserInRoom(id, userId);
 
     return (
-        <div className={"channel-container"} onClick={handleJoin}>
+        <div className={"channel-container"}>
+
+            {isUserInRoom && (
+                <img src={disconnectIcon} alt="" className={"disconnect-icon"} onClick={handleDisconnect} />
+            )}
+
             <div className="channel-header">
-                <h2>
+                <h2 onClick={handleJoin}>
                     <img src={dynamic} alt="" className={"dynamic-icon"}/>
                     {title}
                 </h2>

@@ -58,3 +58,18 @@
     color: #dbdee1;
 }
 
+.disconnect-icon {
+    position: absolute;
+    right: 45px;
+
+
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.disconnect-icon:hover {
+    opacity: 1;
+}

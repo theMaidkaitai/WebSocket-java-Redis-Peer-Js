@@ -39,3 +39,4 @@ export function checkUser(id: string, callback: (exists: boolean) => void) {
         console.error(error);
     }
 }
+

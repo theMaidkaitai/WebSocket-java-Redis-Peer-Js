@@ -58,7 +58,7 @@ public class RoomService {
     }
 
 
-    public String deleteUser (String userId, String roomId) throws Exception { // TODO: refactor
+    public void deleteUser (String userId, String roomId) throws Exception { // TODO: refactor
         RoomEntity room = roomRepository.findById(roomId) // находим руму из которой надо удалить
                 .orElseThrow(() -> new Exception("Комната не найдена"));
         UserEntity user = userRepository.findById(userId)
@@ -70,7 +70,7 @@ public class RoomService {
         room.removeUser(userId);
         roomRepository.save(room);
 
-        return userId;
+        //return user.getId();
     }
 
     public List<UserEntity> getAllUsersInRooms (String roomId) throws Exception {

@@ -92,39 +92,27 @@ public class RoomController {
         }
     }
 
-//    @MessageMapping("/delete/user/room")
-//    @SendTo("/topic/public")
-//    public ResponseEntity<String> deleteUser(@RequestBody RoomIdsDto userDeleteDto) {
-//        try {
-//            String result = roomService.deleteUser(userDeleteDto.userId(), userDeleteDto.roomId());
-//            messagingTemplate.convertAndSend("/topic/public",
-//                    ResponseEntity.status(HttpStatus.CREATED).body(result));
-//
-//            return ResponseEntity.status(HttpStatus.ACCEPTED).body(roomService.deleteUser(userDeleteDto.userId(), userDeleteDto.roomId()));
-//        }
-//        catch (IllegalArgumentException e) {
-//            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    @MessageMapping("/rooms/delete/user")
+    @SendTo("/topic/rooms/delete/user")
+    public void deleteUser(@RequestBody RoomIdsDto userDeleteDto) {
+        try {
+            //String result = roomService.deleteUser(userDeleteDto.userId(), userDeleteDto.roomId());
+           roomService.deleteUser(userDeleteDto.userId(), userDeleteDto.roomId());
 
-//    @MessageMapping("/voice/get/all/rooms/users")
-//    @SendTo("/topic/room/users/all")
-//    public ResponseEntity<String> getUsersInRoom(@RequestBody String roomId) {
-//        try {
-//            Set<String> result = roomService.getUsersInRoom(roomId);
-//            messagingTemplate.convertAndSend("/topic/room/users/all",
-//                    ResponseEntity.status(HttpStatus.CREATED).body(result));
-//
-//            return ResponseEntity.status(HttpStatus.ACCEPTED).body(result.toString());
-//        }
-//        catch (IllegalArgumentException e) {
-//            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+            List<RoomEntity> allRooms = roomService.getRooms();
+            messagingTemplate.convertAndSend("/topic/rooms/get/all", allRooms);
 
+//            List<UserEntity> usersInRoom = roomService.getAllUsersInRooms(userDeleteDto.roomId());
+//            messagingTemplate.convertAndSend("/topic/rooms/get/users/all", usersInRoom);
 
+           //return result;
+        }
+        catch (IllegalArgumentException e) {
+            throw new MessagingException(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    
 }

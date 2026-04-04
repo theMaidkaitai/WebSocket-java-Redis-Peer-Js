@@ -8,8 +8,8 @@ const decoder = new TextDecoder('utf-8');
 export default function initClient(roomsStore: RoomStore, onCreateUser: () => void):Client {
 
     const client = new Client({
-        // webSocketFactory: () => new SockJS(`http://${window.location.host}/voice-ws`),
-        webSocketFactory: () => new SockJS(`http://localhost:8080/voice-ws`),
+        webSocketFactory: () => new SockJS(`http://${window.location.host}/voice-ws`),
+        //webSocketFactory: () => new SockJS(`http://localhost:8080/voice-ws`),
         debug: function (str) {
             console.log(str);
         },
@@ -122,6 +122,8 @@ export default function initClient(roomsStore: RoomStore, onCreateUser: () => vo
                                 getUsersInRoom(room.id);
                             }
                         });
+
+
                         console.log("Комнаты сохранены в store:", formattedRooms.length);
                     }
 
@@ -231,6 +233,9 @@ export default function initClient(roomsStore: RoomStore, onCreateUser: () => vo
                     console.log(`Ошибки обработки прогрузки комнат: ${error}`);
                 }
             });
+
+
+
 
             // client.subscribe('/topic/public', (message) => {
             //     try {

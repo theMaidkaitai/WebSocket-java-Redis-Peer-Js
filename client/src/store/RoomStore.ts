@@ -50,12 +50,23 @@ export default class RoomStore {
         }
     }
 
+
+
     updateUsersInRoom(roomId: string, users: UserData[]) {
         this._rooms = this._rooms.map(room =>
             room.id === roomId
                 ? { ...room, users: users }
                 : room
         );
+    }
+
+    deleteFromRoom(userId: string,roomId: string) {
+        this._rooms = this._rooms.map(room => {
+            if (room.id === roomId) {
+                const otherUsers = room.users?.filter(user => user.id !== userId);
+                return {...room, users: otherUsers};
+            }
+        })
     }
 
     getUsers() {
@@ -78,6 +89,11 @@ export default class RoomStore {
             }
             return room;
         });
+    }
+
+    isUserInRoom(roomId: string, userId: string): boolean {
+        const room = this._rooms.find(r => r.id === roomId);
+        return room?.users?.some(user => user.id === userId) || false;
     }
 
 }
