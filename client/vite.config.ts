@@ -7,4 +7,10 @@ export default defineConfig({
   define: {
     global: 'globalThis',
   },
+  esbuild: {
+    logOverride: { 'this-is-undefined-in-esm': 'silent' }
+  },
+  build: {
+    sourcemap: false
+  }
 });

@@ -35,7 +35,7 @@ const SideBarComponent = observer(() => {
                         key={rooms.id}
                         id={rooms.id}
                         title={rooms.name}
-                        usersId={rooms.usersId}
+                        users={rooms.users}
                     />
                 ))}
                 <img src={addIcon} alt="" className={"add-icon"} onClick={() => setModalVisibility(true)} />
