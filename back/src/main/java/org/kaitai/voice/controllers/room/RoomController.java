@@ -4,6 +4,7 @@ package org.kaitai.voice.controllers.room;
 import org.kaitai.voice.models.RoomEntity;
 import org.kaitai.voice.models.UserEntity;
 import org.kaitai.voice.repository.RoomRepository;
+import org.kaitai.voice.repository.UserRepository;
 import org.kaitai.voice.services.room.RoomService;
 import org.kaitai.voice.services.room.dto.RoomIdsDto;
 import org.kaitai.voice.services.user.UserService;
@@ -28,6 +29,8 @@ public class RoomController {
     private RoomRepository roomRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     @MessageMapping("/rooms/actions/create")
     @SendTo("/topic/rooms/get/created/data")
@@ -65,15 +68,29 @@ public class RoomController {
     @SendTo("/topic/rooms/user/action/connect")
     public void addUserToRoom(@RequestBody RoomIdsDto dto) {
         try {
-            //messagingTemplate.convertAndSend("/topic/rooms/user/action/connect", result);
+            UserEntity user = userRepository.findById(dto.userId())
+                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+            if (user.getRoomId() != null && !user.getRoomId().equals(dto.roomId())) {
+                String oldRoomId = user.getRoomId();
+                RoomEntity oldRoom = roomRepository.findById(oldRoomId)
+                        .orElseThrow(() -> new Exception("Старая комната не найдена"));
+                oldRoom.removeUser(dto.userId());
+                roomRepository.save(oldRoom);
+                System.out.println("✅ User removed from old room: " + oldRoomId);
+            }
+
             roomService.addUser(dto.userId(), dto.roomId());
+
             List<RoomEntity> allRooms = roomService.getRooms();
+
             messagingTemplate.convertAndSend("/topic/rooms/get/all", allRooms);
-        }
-        catch (IllegalArgumentException e) {
-            throw new MessagingException(e.getMessage());
+
+            List<UserEntity> usersInRoom = roomService.getAllUsersInRooms(dto.roomId());
+            messagingTemplate.convertAndSend("/topic/rooms/get/users/all", usersInRoom);
+
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new MessagingException(e.getMessage());
         }
     }
 
