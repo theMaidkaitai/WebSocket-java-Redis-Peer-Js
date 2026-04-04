@@ -94,7 +94,7 @@ services:
 
   frontend:
     build:
-      context: ./front
+      context: ./client
       dockerfile: Dockerfile
     container_name: frontend-container
     environment:
