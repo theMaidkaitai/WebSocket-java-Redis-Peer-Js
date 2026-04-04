@@ -6,41 +6,45 @@ import {checkUser, registUser} from "./ws/user/userWsApi.ts";
 import initClient from "./ws";
 import {Context} from "./main.tsx";
 import {getCookie} from "./ws/getCookie.ts";
-import {getRooms, getUsersInRoom} from "./ws/rooms/roomsWsApi.ts";
+import {getRooms} from "./ws/rooms/roomsWsApi.ts";
 
 function App() {
     const { rooms } = useContext(Context);
     const clientRef = useRef(null);
+    const registrationAttempted = useRef(false);
 
     useEffect(() => {
         const init = async () => {
-
             const handleCreateUser = async () => {
-                console.log("WebSocket connected, registering user...");
+                console.log("WebSocket connected, handling user...");
                 const userId: string = getCookie("id");
 
-                if (userId === null || userId === undefined) {
+                if (!userId || userId === "null" || userId === "undefined") {
+                    console.log("No user cookie, registering new user...");
                     await registUser();
+                    await getRooms();
+                    return;
                 }
 
-                checkUser(userId, (exists) => {
-                    if (!exists) {
+               
+                checkUser(userId, async (exists) => {
+                    if (!exists && !registrationAttempted.current) {
+                        registrationAttempted.current = true;
                         console.log("User not found, registering...");
-                         registUser();
-                    } else {
+                        await registUser();
+                    } else if (exists) {
                         console.log("User already exists:", userId);
                     }
+                    await getRooms();
                 });
-                await getRooms();
             };
 
-
-            const client =  initClient(rooms, handleCreateUser);
+            const client = initClient(rooms, handleCreateUser);
             clientRef.current = client;
         }
 
+        init();
 
-        init()
         return () => {
             if (clientRef.current) {
                 clientRef.current.deactivate();
@@ -48,15 +52,12 @@ function App() {
         };
     }, []);
 
-
-
-  return (
-      <div style={{ position: 'relative', minHeight: '100vh' }}>
-          <SideBarComponent/>
-          <VoidComponent/>
-      </div>
-
-  )
+    return (
+        <div style={{ position: 'relative', minHeight: '100vh' }}>
+            <SideBarComponent/>
+            <VoidComponent/>
+        </div>
+    );
 }
 
-export default App
+export default App;
