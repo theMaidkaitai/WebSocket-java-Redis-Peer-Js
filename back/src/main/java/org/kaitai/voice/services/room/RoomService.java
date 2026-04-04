@@ -48,10 +48,20 @@ public class RoomService {
     public void addUser (String userId, String roomId) throws Exception {
         RoomEntity room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new Exception("Комната не найдена"));
-        room.pushUser(userId);
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new Exception("Юзер не найден"));
+
+        if (user.getRoomId() != null && !user.getRoomId().equals(roomId)) {
+            String oldRoomId = user.getRoomId();
+            RoomEntity oldRoom = roomRepository.findById(oldRoomId)
+                    .orElseThrow(() -> new Exception("Старая комната не найдена"));
+
+            oldRoom.removeUser(userId);
+            roomRepository.save(oldRoom);
+        }
+
         user.setRoomId(room.getId());
+        room.pushUser(userId);
 
         userRepository.save(user);
         roomRepository.save(room);

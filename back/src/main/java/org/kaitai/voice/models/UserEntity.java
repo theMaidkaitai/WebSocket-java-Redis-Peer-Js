@@ -19,5 +19,8 @@ public class UserEntity {
         this.nick = "Guest";
     }
 
+    public void removeRoomId () {
+        this.roomId = null;
+    }
 
 }
