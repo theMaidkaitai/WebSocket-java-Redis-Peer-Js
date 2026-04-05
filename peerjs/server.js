@@ -6,7 +6,13 @@ const peerServer = PeerServer({
   key: 'peerjs-secret-key',  
   allow_discovery: true,
   cors_options: {
-    origin: ['http://localhost:3000', 'http://frontend:80', 'http://localhost:80'],
+    origin: [
+      'http://localhost:3000', 
+      'http://frontend:80', 
+      'http://localhost:80', 
+      'http://localhost:5173', 
+      'http://139.100.193.100'
+    ],
     credentials: true
   },
   ssl: null,
@@ -20,5 +26,10 @@ peerServer.on('connection', (client) => {
 peerServer.on('disconnect', (client) => {
   console.log('Client disconnected:', client.getId());
 });
+
+
+
+var call = peer.call("dest-peer-id", mediaStream);
+
 
 console.log('PeerJS server running on port 9000');

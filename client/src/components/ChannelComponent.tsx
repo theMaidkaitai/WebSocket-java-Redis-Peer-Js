@@ -8,6 +8,8 @@ import {connectToRoom, disconnectUser, getRooms, getUsersInRoom} from "../ws/roo
 import {getCookie} from "../ws/getCookie.ts";
 import disconnectIcon from "../assets/disconnectIcon.png"
 import {UserData} from "../store/RoomStore.ts";
+import Peer from "peerjs";
+import {peerInstanse} from "../peer";
 
 
 interface ChannelComponentProps {
@@ -18,6 +20,8 @@ interface ChannelComponentProps {
 
 const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
     const { rooms } = useContext(Context);
+    const [peer, setPeer] = useState(null);
+
 
     const handleJoin = async () => {
         const userId = getCookie("id")
@@ -36,6 +40,10 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
         console.log("roomId: " + id);
         const init = async () => {
             await getUsersInRoom(id)
+
+            const peerRtc = await peerInstanse()
+            setPeer(peerRtc);
+
         }
         init()
     }, []);
