@@ -20,7 +20,7 @@ public class RedisConfig {
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
-        config.setHostName("139.100.193.100");
+        config.setHostName("178.72.178.50");
         config.setPort(6379);
         config.setPassword("redis123");
 

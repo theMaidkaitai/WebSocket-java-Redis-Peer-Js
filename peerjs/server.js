@@ -7,15 +7,20 @@ const peerServer = PeerServer({
   allow_discovery: true,
   cors_options: {
     origin: [
-      'http://localhost:3000', 
-      'http://frontend:80', 
-      'http://localhost:80', 
-      'http://localhost:5173', 
-      'http://139.100.193.100'
+                "http://localhost:5173",
+                "https://localhost:5173",
+                "http://178.72.178.50",
+                "https://178.72.178.50",
+                "https://localhost:6379",
+                "https://localhost:9000",
+                "https://localhost:80",
+                "http://localhost:80",
+                "http://localhost:9000",
+                "http://localhost:6379"
     ],
     credentials: true
   },
-  ssl: null,
+  ssl: true,
   debug: 3
 });
 

@@ -11,7 +11,7 @@ export const peerInstanse = async () => {
                 { urls: 'stun:stun.l.google.com:19302' }
             ]
         },
-        secure: false
+        secure: true
 
     });
 

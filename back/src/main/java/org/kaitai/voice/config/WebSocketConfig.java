@@ -14,7 +14,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOriginPatterns("*")
                 .setAllowedOrigins(
                         "http://localhost:5173",
-                        "http://139.100.193.100",
+                        "https://localhost:5173",
+                        "http://178.72.178.50",
+                        "https://178.72.178.50",
+                        "https://localhost:6379",
+                        "https://localhost:9000",
+                        "https://localhost:80",
                         "http://localhost:80",
                         "http://localhost:9000",
                         "http://localhost:6379"
