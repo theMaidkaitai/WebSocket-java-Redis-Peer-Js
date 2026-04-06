@@ -34,7 +34,7 @@ peerServer.on('disconnect', (client) => {
 
 
 
-var call = peer.call("dest-peer-id", mediaStream);
+// var call = peer.call("dest-peer-id", mediaStream);
 
 
 console.log('PeerJS server running on port 9000');
