@@ -23,14 +23,13 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/voice-ws/**", "/ws/**"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/voice-ws/**", "/ws/**", "/voice/**"))
                 .csrf(csv -> csv.disable())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/voice-ws/**").permitAll()
-                        .requestMatchers("/ws/**").permitAll()
+                        .requestMatchers("/voice-ws/**", "/ws/**", "/voice/**").permitAll()
                 );
         return http.build();
     }
