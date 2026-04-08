@@ -24,7 +24,10 @@ public class SecurityConfig {
         http
                 .headers(header -> header.frameOptions(frame -> frame.sameOrigin()))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csv -> csv.disable())
+                .csrf(csv -> csv
+                        .ignoringRequestMatchers("/voice-ws/**")
+                        .disable()
+                )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
