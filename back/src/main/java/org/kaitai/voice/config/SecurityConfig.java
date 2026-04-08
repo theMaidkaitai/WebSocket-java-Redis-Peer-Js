@@ -22,6 +22,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         http
+                .headers(header -> header.frameOptions(frame -> frame.sameOrigin()))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csv -> csv.disable())
                 .sessionManagement(session -> session
