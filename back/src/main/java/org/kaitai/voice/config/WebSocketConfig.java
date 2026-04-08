@@ -10,15 +10,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/voice-ws") // first handshake - to connect
-                .setAllowedOriginPatterns("*")
+        registry.addEndpoint("/voice-ws")
                 .setAllowedOrigins(
                         "http://localhost:5173",
                         "https://localhost:5173",
                         "http://178.72.178.50",
                         "https://1488-pozvony.ru",
-                        "https://1488-pozvony.ru/",
-                        "http://1488-pozvony.ru",
                         "https://178.72.178.50",
                         "https://localhost:6379",
                         "https://localhost:9000",
