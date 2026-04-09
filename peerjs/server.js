@@ -40,6 +40,11 @@ peerServer.on('disconnect', (client) => {
   console.log('Client disconnected:', client.getId());
 });
 
+peerServer.on('message', (client) => {
+  console.log('Client disconnected:', client.getSocket());
+});
+
+
 
 
 // var call = peer.call("dest-peer-id", mediaStream);
