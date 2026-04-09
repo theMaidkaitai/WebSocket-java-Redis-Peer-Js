@@ -1,7 +1,8 @@
 import Peer from "peerjs";
 
-export const peerInstanse = async () => {
-     const peer = new Peer({
+export const peerInstanse = async (id: string) => {
+
+     const peer = new Peer(id ,{
         host: import.meta.env.VITE_PEER_HOST || "1488-pozvony.ru",
         port: import.meta.env.VITE_PEER_PORT || 443,
         path: '/peerjs',

@@ -28,12 +28,17 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
         console.log(`userId: ${userId} roomId: ${id}`)
         await connectToRoom(userId, id)
 
+
+        const peerRtc = await peerInstanse(id)
+        console.log("PEER RTC:", peerRtc.peer)
+        console.log("PEER MEDIA STREAM:", peerRtc.mediaStream)
+        setPeer(peerRtc);
+
     };
 
     const handleDisconnect = async () => {
         const userId = getCookie("id")
         disconnectUser(userId, id)
-        //await getUsersInRoom(id);
     }
 
     useEffect(() => {
@@ -41,10 +46,6 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
         const init = async () => {
             await getUsersInRoom(id)
 
-            const peerRtc = await peerInstanse()
-            console.log("PEER RTC:", peerRtc.peer)
-            console.log("PEER MEDIA STREAM:", peerRtc.mediaStream)
-            setPeer(peerRtc);
 
         }
         init()
