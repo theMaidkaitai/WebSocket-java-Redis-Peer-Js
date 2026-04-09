@@ -20,8 +20,11 @@ export const peerInstanse = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true });
             window.localStream = stream;
+
+            window.localAudio = new Audio();
             window.localAudio.srcObject = stream;
             window.localAudio.autoplay = true;
+
             return stream;
         } catch (error) {
             console.error('Microphone access denied:', error);
@@ -33,13 +36,8 @@ export const peerInstanse = async () => {
 
 
 
-    peer.on("open", function () {
-        conn.on("data", function (data) {
-            console.log("Received open", data);
-        });
-
-
-        conn.send("Hello!");
+    peer.on("open", () => {
+        console.log("Peer connected, ID:", peer.id);
     });
 
      peer.on("error", err => {
@@ -52,38 +50,24 @@ export const peerInstanse = async () => {
     })
 
 
-    var conn = peer.connect("dest-peer-id");
-    peer.on("open", function () {
-        conn.on("data", function (data) {
-            console.log("Received", data);
-        });
 
-        conn.send("Hello!");
-    });
 
+    peer.call("dest-peer-id", mediaStream);
 
     peer.on("call", (call) => {
+        console.log("Incoming call from:", call.peer);
+
         if (mediaStream) {
             call.answer(mediaStream);
+
             call.on("stream", (remoteStream) => {
-                console.log("Received remote stream (CALL)");
+                console.log("Received remote stream");
                 const remoteAudio = new Audio();
                 remoteAudio.srcObject = remoteStream;
-                remoteAudio.autoplay = true;
+                remoteAudio.play();
             });
         }
     });
-
-    // if (mediaStream) {
-    //     const call = peer.call("dest-peer-id", mediaStream);
-    //     call.on("stream", (remoteStream) => {
-    //         console.log("Call answered, remote stream received (ANSWER TO CALL)");
-    //         const remoteAudio = new Audio();
-    //         remoteAudio.srcObject = remoteStream;
-    //         remoteAudio.autoplay = true;
-    //     });
-    // }
-
 
 
     return { peer, mediaStream };
