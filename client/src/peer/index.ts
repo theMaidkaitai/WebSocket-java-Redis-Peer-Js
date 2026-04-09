@@ -32,14 +32,14 @@ export const peerInstanse = async () => {
     const mediaStream = await getMicro()
 
 
-    peer.on("open", () => {
-        const conn = peer.connect("dest-peer-id");
-        conn.on("open", () => {
-            conn.on("data", (data) => {
-                console.log("Received (OPEN)", data);
-            });
-            conn.send("Hello!");
+
+    conn.on("open", function () {
+        conn.on("data", function (data) {
+            console.log("Received open", data);
         });
+
+
+        conn.send("Hello!");
     });
 
      peer.on("error", err => {
