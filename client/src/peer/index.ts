@@ -2,8 +2,8 @@ import Peer from "peerjs";
 
 export const peerInstanse = async () => {
      const peer = new Peer({
-        host: import.meta.env.VITE_PEER_HOST || "localhost",
-        port: import.meta.env.VITE_PEER_PORT || 9000,
+        host: import.meta.env.VITE_PEER_HOST || "1488-pozvony.ru",
+        port: import.meta.env.VITE_PEER_PORT || 443,
         path: '/peerjs',
         key: 'peerjs-secret-key',
         config: {
@@ -11,8 +11,8 @@ export const peerInstanse = async () => {
                 { urls: 'stun:stun.l.google.com:19302' }
             ]
         },
-        secure: true
-
+        secure: true,
+        debug: 3
     });
 
 
@@ -33,7 +33,7 @@ export const peerInstanse = async () => {
 
 
 
-    conn.on("open", function () {
+    peer.on("open", function () {
         conn.on("data", function (data) {
             console.log("Received open", data);
         });
@@ -53,7 +53,7 @@ export const peerInstanse = async () => {
 
 
     var conn = peer.connect("dest-peer-id");
-    conn.on("open", function () {
+    peer.on("open", function () {
         conn.on("data", function (data) {
             console.log("Received", data);
         });
