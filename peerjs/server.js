@@ -28,7 +28,6 @@ const peerServer = PeerServer({
 });
 
 
-var conn = peerServer.connect("dest-peer-id");
 peerServer.on("open", function (id) {
   console.log("My peer ID is: " + id);
 });
