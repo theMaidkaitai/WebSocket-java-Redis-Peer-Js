@@ -41,12 +41,10 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
         const init = async () => {
             await getUsersInRoom(id)
 
-            if (isUserInRoom) {
-                const peerRtc = await peerInstanse()
-                console.log("PEER RTC:", peerRtc.peer)
-                console.log("PEER MEDIA STREAM:", peerRtc.mediaStream)
-                setPeer(peerRtc);
-            }
+            const peerRtc = await peerInstanse()
+            console.log("PEER RTC:", peerRtc.peer)
+            console.log("PEER MEDIA STREAM:", peerRtc.mediaStream)
+            setPeer(peerRtc);
 
         }
         init()
