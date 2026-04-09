@@ -45,8 +45,6 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
         console.log("roomId: " + id);
         const init = async () => {
             await getUsersInRoom(id)
-
-
         }
         init()
     }, []);
