@@ -46,7 +46,7 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
     useEffect(() => {
         console.log("roomId: " + id);
-        
+
         const init = async () => {
             await getUsersInRoom(id)
         }

@@ -55,12 +55,12 @@ export const peerInstanse = async (id: string) => {
 
     peer.call(id, mediaStream);
 
-    peer.on("call", (call) => {
+    peer.on("call", async (call) => {
         console.log("Incoming call from:", call.peer);
 
         if (mediaStream) {
+            await new Promise(resolve => setTimeout(resolve, 100));
             call.answer(mediaStream);
-
             call.on("stream", (remoteStream) => {
                 console.log("Received remote stream");
                 const remoteAudio = new Audio();
@@ -68,6 +68,11 @@ export const peerInstanse = async (id: string) => {
                 remoteAudio.play();
             });
         }
+
+        call.on("error", (err) => {
+            console.error("CALL ERROR:", err);
+        });
+
     });
 
 
