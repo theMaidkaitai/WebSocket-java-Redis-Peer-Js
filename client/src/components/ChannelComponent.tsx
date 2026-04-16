@@ -34,7 +34,7 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
         const usersInRoom: UserData[] = await getUsersInRoom(id);
 
-        for (const user of usersInRoom) {
+        usersInRoom.forEach( async user => {
             if (user.id !== userId) {
                 await peerInstanse(userId)
 
@@ -42,9 +42,10 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
             else {
                 console.log("ОШИБКА ПРИ ПОДКЛЮЧЕНИИ И УСТАНОВЛЕНИИ СВЯЗИ С ЮЗЕРАМИ.")
             }
-        }
+        });
 
 
+        //
         // console.log("PEER RTC:", peerRtc.peer)
         // console.log("PEER MEDIA STREAM:", peerRtc.mediaStream)
         //
