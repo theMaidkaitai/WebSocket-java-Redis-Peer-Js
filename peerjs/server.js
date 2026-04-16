@@ -1,4 +1,6 @@
 const { PeerServer } = require('peer');  
+const fs = require('fs');
+
 
 const peerServer = PeerServer({
   port: 9000,
