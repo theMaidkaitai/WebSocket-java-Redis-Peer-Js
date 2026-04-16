@@ -32,17 +32,17 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
         await connectToRoom(userId, id)
 
 
-        const usersInRoom: UserData[] = await getUsersInRoom(id);
-
-        usersInRoom.forEach(user => {
-            if (user.id !== userId) {
-                peerRtc.peer.call(user.id, peerRtc.mediaStream);
-
-            }
-            else {
-                console.log("ОШИБКА ПРИ ПОДКЛЮЧЕНИИ И УСТАНОВЛЕНИИ СВЯЗИ С ЮЗЕРАМИ.")
-            }
-        });
+        // const usersInRoom: UserData[] = await getUsersInRoom(id);
+        //
+        // usersInRoom.forEach(user => {
+        //     if (user.id !== userId) {
+        //         peerRtc.peer.call(user.id, peerRtc.mediaStream);
+        //
+        //     }
+        //     else {
+        //         console.log("ОШИБКА ПРИ ПОДКЛЮЧЕНИИ И УСТАНОВЛЕНИИ СВЯЗИ С ЮЗЕРАМИ.")
+        //     }
+        // });
 
 
 
@@ -67,7 +67,10 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
         console.log("roomId: " + id);
 
         const init = async () => {
-            await getUsersInRoom(id)
+            const users = await getUsersInRoom(id)
+            console.log("USERS FROM CHANNEL (Stringify): " + JSON.stringify(users))
+            console.log("USERS FROM CHANNEL (not stringify): " + JSON.stringify(users))
+
         }
         init()
     }, []);
@@ -89,12 +92,15 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
         const myId = getCookie("id");
 
-        users.forEach(user => {
-            if (user.id !== myId) {
-                console.log("Звоню пользователю:", user.id);
-                peer.peer.call(user.id, peer.mediaStream);
-            }
-        });
+        if (users && users.length > 0) {
+            users.forEach(user => {
+                if (user.id !== myId) {
+                    console.log("Звоню пользователю:", user.id);
+                    peer.peer.call(user.id, peer.mediaStream);
+                }
+            });
+        }
+
     }, [users, peer]);
 
     return (
