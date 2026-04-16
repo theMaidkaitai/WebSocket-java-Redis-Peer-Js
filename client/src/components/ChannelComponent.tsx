@@ -26,9 +26,12 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
     const handleJoin = async () => {
         const userId = getCookie("id")
         console.log(`userId: ${userId} roomId: ${id}`)
+
         const peerRtc = await peerInstanse(id)
+
         console.log("PEER RTC:", peerRtc.peer)
         console.log("PEER MEDIA STREAM:", peerRtc.mediaStream)
+
         setPeer(peerRtc);
 
 

@@ -57,7 +57,7 @@ export const peerInstanse = async (id: string) => {
 
     peer.on("call", async (call) => {
         console.log("Incoming call from:", call.peer);
-
+        console.log("call myself")
         if (mediaStream) {
             await new Promise(resolve => setTimeout(resolve, 100));
             call.answer(mediaStream);
