@@ -31,17 +31,18 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
         const peerRtc = await peerInstanse(id)
 
-        const usersInRoom = await getUsersInRoom(id);
-
         // @ts-ignore
-        usersInRoom.forEach(user => {
-            if (user.id !== userId) {
-                peerRtc.peer.call(user.id, peerRtc.mediaStream);
-            }
-            else if (usersInRoom.length === 1 && user.id === userId) {
-                console.log("Нету других пользователей")
-            }
-        });
+        // const usersInRoom: UserData = await getUsersInRoom(id);
+        //
+        // // @ts-ignore
+        // usersInRoom.forEach(user => {
+        //     if (user.id !== userId) {
+        //         peerRtc.peer.call(user.id, peerRtc.mediaStream);
+        //     }
+        //     else if (usersInRoom.length === 1 && user.id === userId) {
+        //
+        //     }
+        // });
 
         console.log("PEER RTC:", peerRtc.peer)
         console.log("PEER MEDIA STREAM:", peerRtc.mediaStream)
