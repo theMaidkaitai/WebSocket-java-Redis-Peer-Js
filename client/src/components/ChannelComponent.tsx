@@ -29,7 +29,8 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
 
         const peerRtc = await peerInstanse(userId)
-
+        await connectToRoom(userId, id)
+        
 
         const usersInRoom: UserData[] = await getUsersInRoom(id);
 
@@ -49,7 +50,6 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
         setPeer(peerRtc);
 
 
-        await connectToRoom(userId, id)
 
 
 
