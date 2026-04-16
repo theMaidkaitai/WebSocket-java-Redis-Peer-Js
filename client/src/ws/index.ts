@@ -124,6 +124,7 @@ export default function initClient(roomsStore: RoomStore, onCreateUser: () => vo
                         });
 
 
+
                         console.log("Комнаты сохранены в store:", formattedRooms.length);
                     }
 
@@ -140,6 +141,11 @@ export default function initClient(roomsStore: RoomStore, onCreateUser: () => vo
                     console.error("Ошибка обработки комнат:", error);
                 }
             });
+
+
+
+
+
 
 
             client.subscribe('/topic/rooms/get/one', (message) => {

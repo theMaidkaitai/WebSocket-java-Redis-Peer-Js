@@ -76,6 +76,7 @@ public class RoomController {
             List<UserEntity> usersInRoom = roomService.getAllUsersInRooms(dto.roomId());
             messagingTemplate.convertAndSend("/topic/rooms/get/users/all", usersInRoom);
 
+
         } catch (Exception e) {
             throw new MessagingException(e.getMessage());
         }

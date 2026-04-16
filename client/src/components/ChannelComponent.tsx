@@ -28,26 +28,27 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
         console.log(`userId: ${userId} roomId: ${id}`)
 
 
-        const peerRtc = await peerInstanse(userId)
+        // const peerRtc = await peerInstanse(userId)
         await connectToRoom(userId, id)
-        
+
 
         const usersInRoom: UserData[] = await getUsersInRoom(id);
 
-        usersInRoom.forEach(user => {
+        for (const user of usersInRoom) {
             if (user.id !== userId) {
-                peerRtc.peer.call(user.id, peerRtc.mediaStream);
+                await peerInstanse(userId)
 
             }
             else {
                 console.log("ОШИБКА ПРИ ПОДКЛЮЧЕНИИ И УСТАНОВЛЕНИИ СВЯЗИ С ЮЗЕРАМИ.")
             }
-        });
+        }
 
-        console.log("PEER RTC:", peerRtc.peer)
-        console.log("PEER MEDIA STREAM:", peerRtc.mediaStream)
 
-        setPeer(peerRtc);
+        // console.log("PEER RTC:", peerRtc.peer)
+        // console.log("PEER MEDIA STREAM:", peerRtc.mediaStream)
+        //
+        // setPeer(peerRtc);
 
 
 
