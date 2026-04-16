@@ -10,7 +10,6 @@ export const peerInstanse = async (id: string) => {
         config: {
             iceServers: [
                 { urls: 'stun:stun.l.google.com:19302' },
-                { urls : 'stun.12voip.com:3478' },
                 { urls : 'stun.1und1.de:3478' },
                 { urls : 'stun.bluesip.net:3478' },
                 { urls : 'stun.eyeball.com:3478' }
