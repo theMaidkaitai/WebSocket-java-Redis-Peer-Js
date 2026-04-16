@@ -3,7 +3,7 @@ const { PeerServer } = require('peer');
 const peerServer = PeerServer({
   port: 9000,
   path: '/peerjs',
-  key: 'peerjs-secret-key',  
+  key: '1488pozvony',  
   allow_discovery: true,
   cors_options: {
     origin: [

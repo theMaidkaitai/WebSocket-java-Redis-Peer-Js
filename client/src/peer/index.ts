@@ -6,10 +6,14 @@ export const peerInstanse = async (id: string) => {
         host: import.meta.env.VITE_PEER_HOST || "1488-pozvony.ru",
         port: import.meta.env.VITE_PEER_PORT || 443,
         path: '/peerjs',
-        key: 'peerjs-secret-key',
+        key: '1488pozvony',
         config: {
             iceServers: [
-                { urls: 'stun:stun.l.google.com:19302' }
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls : 'stun.12voip.com:3478' },
+                { urls : 'stun.1und1.de:3478' },
+                { urls : 'stun.bluesip.net:3478' },
+                { urls : 'stun.eyeball.com:3478' }
             ]
         },
         secure: true,
@@ -25,15 +29,15 @@ export const peerInstanse = async (id: string) => {
             window.localAudio = new Audio();
             window.localAudio.srcObject = stream;
             window.localAudio.autoplay = true;
-
             return stream;
+
         } catch (error) {
             console.error('Microphone access denied:', error);
             return null;
         }
     }
 
-    const mediaStream = await getMicro()
+    const mediaStream: MediaStream = await getMicro()
 
 
 
