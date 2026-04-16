@@ -21,7 +21,10 @@ const peerServer = PeerServer({
     ],
     credentials: true
   },
-  ssl: true,
+  ssl: {
+    key: fs.readFileSync('/etc/letsencrypt/live/1488-pozvony.ru/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/1488-pozvony.ru/fullchain.pem')
+  },
   debug: 1
 });
 

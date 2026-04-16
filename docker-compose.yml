@@ -76,7 +76,8 @@ services:
     container_name: peerjs-container
     expose:
       - "9000"
-    
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     networks:
       - app-network
     restart: unless-stopped
