@@ -38,6 +38,9 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
                 peerRtc.peer.call(user.id, peerRtc.mediaStream);
 
             }
+            else {
+                console.log("ОШИБКА ПРИ ПОДКЛЮЧЕНИИ И УСТАНОВЛЕНИИ СВЯЗИ С ЮЗЕРАМИ.")
+            }
         });
 
         console.log("PEER RTC:", peerRtc.peer)
