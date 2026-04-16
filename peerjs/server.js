@@ -7,8 +7,6 @@ const peerServer = PeerServer({
   allow_discovery: true,
   cors_options: {
     origin: [
-                "http://localhost:5173",
-                "https://localhost:5173",
                 "http://178.72.178.50",
                 "https://1488-pozvony.ru",
                 "https://1488-pozvony.ru/",
