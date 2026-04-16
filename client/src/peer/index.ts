@@ -12,8 +12,25 @@ export const peerInstanse = async (id: string) => {
                 { urls: 'stun:stun.l.google.com:19302' },
                 { urls: 'stun:stun.1und1.de:3478' },
                 { urls: 'stun:stun.bluesip.net:3478' },
-                { urls: 'stun:stun.eyeball.com:3478' }
-            ]
+                { urls: 'stun:stun.eyeball.com:3478' },
+
+                {
+                    urls: 'turn:openrelay.metered.ca:80',
+                    username: 'openrelayproject',
+                    credential: 'openrelayproject'
+                },
+                {
+                    urls: 'turn:openrelay.metered.ca:443',
+                    username: 'openrelayproject',
+                    credential: 'openrelayproject'
+                },
+                {
+                    urls: 'turn:openrelay.metered.ca:443?transport=tcp',
+                    username: 'openrelayproject',
+                    credential: 'openrelayproject'
+                }
+            ],
+
         },
         secure: true,
         debug: 1
