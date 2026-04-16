@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 export interface UserData {
-    id: number | string;
+    id: string;
     name: string;
     roomId: string
 }

@@ -1,4 +1,5 @@
 import {Client} from "@stomp/stompjs";
+import {UserData} from "../../store/RoomStore.ts";
 
 let stompClient: Client | null = null;
 
@@ -63,7 +64,7 @@ export async function connectToRoom (userId: string, roomId: string) {
 }
 
 
-export async function getUsersInRoom (roomId: string) {
+export async function getUsersInRoom (roomId: string): Promise<UserData[]> {
     try {
         if (!stompClient) {
             console.log("WebSocket not ready")
