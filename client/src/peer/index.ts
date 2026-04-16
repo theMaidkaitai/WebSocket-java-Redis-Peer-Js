@@ -25,9 +25,11 @@ export const peerInstanse = async (id: string) => {
             const stream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true });
             window.localStream = stream;
 
-            window.localAudio = new Audio();
-            window.localAudio.srcObject = stream;
-            window.localAudio.autoplay = true;
+            // window.localAudio = new Audio();
+            // window.localAudio.srcObject = stream;
+            // window.localAudio.autoplay = true; hear myself
+
+
             return stream;
 
         } catch (error) {
@@ -59,23 +61,16 @@ export const peerInstanse = async (id: string) => {
     //peer.call(id, mediaStream);
 
     peer.on("call", async (call) => {
-        console.log("Incoming call from:", call.peer);
-        console.log("call myself")
+        console.log("ВХОДЯЩИЙ ЗВОНОК ОТ:", call.peer);
         if (mediaStream) {
-            await new Promise(resolve => setTimeout(resolve, 100));
             call.answer(mediaStream);
             call.on("stream", (remoteStream) => {
-                console.log("Received remote stream");
+                console.log("ПОЛУЧЕН УДАЛЁННЫЙ СТРИМ ОТ:", call.peer);
                 const remoteAudio = new Audio();
                 remoteAudio.srcObject = remoteStream;
                 remoteAudio.play();
             });
         }
-
-        call.on("error", (err) => {
-            console.error("CALL ERROR:", err);
-        });
-
     });
 
 
