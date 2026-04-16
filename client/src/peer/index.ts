@@ -11,23 +11,11 @@ export const peerInstanse = async (id: string) => {
             iceServers: [
                 { urls: 'stun:stun.1und1.de:3478' },
                 { urls: 'stun:stun.bluesip.net:3478' },
-
                 {
-                    url: 'turn:numb.viagenie.ca',
-                    credential: 'muazkh',
-                    username: 'webrtc@live.com'
-                },
-                {
-                    url: 'turn:192.158.29.39:3478?transport=udp',
-                    credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-                    username: '28224511:1379330808'
-                },
-
-                {
-                    urls: 'turn:openrelay.metered.ca:80',
-                    username: 'openrelayproject',
-                    credential: 'openrelayproject'
-                },
+                    urls: 'turn:turn.anyfirewall.com:443?transport=tcp',
+                    username: 'webrtc',
+                    credential: 'webrtc'
+                }
 
             ],
 
