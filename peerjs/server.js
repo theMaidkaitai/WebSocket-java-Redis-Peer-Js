@@ -22,7 +22,7 @@ const peerServer = PeerServer({
     credentials: true
   },
   ssl: true,
-  debug: 3
+  debug: 1
 });
 
 
