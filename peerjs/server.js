@@ -23,10 +23,10 @@ const peerServer = PeerServer({
     ],
     credentials: true
   },
-  ssl: {
-    key: fs.readFileSync('/etc/letsencrypt/live/1488-pozvony.ru/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/1488-pozvony.ru/fullchain.pem')
-  },
+  // ssl: {
+  //   key: fs.readFileSync('/etc/letsencrypt/live/1488-pozvony.ru/privkey.pem'),
+  //   cert: fs.readFileSync('/etc/letsencrypt/live/1488-pozvony.ru/fullchain.pem')   Nginx alr proxing
+  // },
   debug: 1
 });
 
