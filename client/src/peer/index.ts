@@ -56,7 +56,7 @@ export const peerInstanse = async (id: string) => {
 
 
 
-    peer.call(id, mediaStream);
+    //peer.call(id, mediaStream);
 
     peer.on("call", async (call) => {
         console.log("Incoming call from:", call.peer);
