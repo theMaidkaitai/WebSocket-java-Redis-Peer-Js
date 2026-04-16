@@ -73,12 +73,29 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
     }, []);
 
 
+
+
     const room = rooms.rooms.find(r => r.id === id);
     const users = room?.users || [];
 
 
     const userId = getCookie("id")
     const isUserInRoom = rooms.isUserInRoom(id, userId);
+
+
+
+    useEffect(() => {
+        if (!peer || !peer.mediaStream) return;
+
+        const myId = getCookie("id");
+
+        users.forEach(user => {
+            if (user.id !== myId) {
+                console.log("Звоню пользователю:", user.id);
+                peer.peer.call(user.id, peer.mediaStream);
+            }
+        });
+    }, [users, peer]);
 
     return (
         <div className={"channel-container"}>
