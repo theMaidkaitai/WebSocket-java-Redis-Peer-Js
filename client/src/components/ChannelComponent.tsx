@@ -28,21 +28,17 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
         console.log(`userId: ${userId} roomId: ${id}`)
 
 
+        const peerRtc = await peerInstanse(userId)
 
-        const peerRtc = await peerInstanse(id)
 
-        // @ts-ignore
-        // const usersInRoom: UserData = await getUsersInRoom(id);
-        //
-        // // @ts-ignore
-        // usersInRoom.forEach(user => {
-        //     if (user.id !== userId) {
-        //         peerRtc.peer.call(user.id, peerRtc.mediaStream);
-        //     }
-        //     else if (usersInRoom.length === 1 && user.id === userId) {
-        //
-        //     }
-        // });
+        const usersInRoom: UserData[] = await getUsersInRoom(id);
+
+        usersInRoom.forEach(user => {
+            if (user.id !== userId) {
+                peerRtc.peer.call(user.id, peerRtc.mediaStream);
+
+            }
+        });
 
         console.log("PEER RTC:", peerRtc.peer)
         console.log("PEER MEDIA STREAM:", peerRtc.mediaStream)
