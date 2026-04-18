@@ -114,7 +114,6 @@ export const peerInstanse = async (id: string) => {
                     audio.remove();
                     window.remoteAudios.delete(call.peer);
                 }
-                call.close()
             });
         }
     });

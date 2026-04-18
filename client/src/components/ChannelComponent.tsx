@@ -70,6 +70,25 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
             audio.remove();
         });
 
+
+
+        const myId = getCookie("id");
+        const currentUserIds = users.map(u => u.id);
+        window.activeCalls.forEach((call, userId) => {
+            if (!currentUserIds.includes(userId) && userId !== myId) {
+                console.log("Закрываем звонок с:", userId);
+                call.close();
+                window.activeCalls.delete(userId);
+
+                const audio = window.remoteAudios?.get(userId);
+                    audio.pause();
+                    audio.srcObject = null;
+                    audio.remove();
+                    window.remoteAudios.delete(userId);
+            }
+        });
+
+
         window.localStream.getTracks().forEach(track => track.stop());
         window.localStream = null;
 
