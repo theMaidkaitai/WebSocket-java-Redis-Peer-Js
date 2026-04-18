@@ -64,30 +64,16 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
         setPeer(peerRtc);
     };
 
-    useEffect(() => {
-        const currentRoomId = localStorage.getItem("roomId");
-        if (currentRoomId && currentRoomId !== id) {
-            const userId = getCookie("id");
-            disconnectUser(userId, currentRoomId);
-
-            if (peer) {
-                peer.peer.destroy();
-                setPeer(null);
-            }
-
-            if (window.localStream) {
-                window.localStream.getTracks().forEach(track => track.stop());
-                window.localStream = null;
-            }
-        }
-
-        localStorage.setItem("roomId", id);
-    }, [id]);
 
 
     const handleDisconnect = async () => {
         const userId = getCookie("id")
         disconnectUser(userId, id)
+        peer.peer.destroy();
+        if (window.localStream) {
+            window.localStream.getTracks().forEach(track => track.stop());
+            window.localStream = null
+        }
         setPeer(null);
     }
 
