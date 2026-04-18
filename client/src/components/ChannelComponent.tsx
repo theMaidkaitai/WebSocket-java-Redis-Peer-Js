@@ -44,20 +44,6 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
         await connectToRoom(userId, id)
 
 
-        // const usersInRoom: UserData[] = await getUsersInRoom(id);
-        //
-        // usersInRoom.forEach(user => {
-        //     if (user.id !== userId) {
-        //         peerRtc.peer.call(user.id, peerRtc.mediaStream);
-        //
-        //     }
-        //     else {
-        //         console.log("ОШИБКА ПРИ ПОДКЛЮЧЕНИИ И УСТАНОВЛЕНИИ СВЯЗИ С ЮЗЕРАМИ.")
-        //     }
-        // });
-
-
-
         console.log("PEER RTC:", peerRtc.peer)
         console.log("PEER MEDIA STREAM:", peerRtc.mediaStream)
 
@@ -84,10 +70,10 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
             audio.remove();
         });
 
-        if (window.localStream) {
-            window.localStream.getTracks().forEach(track => track.stop());
-            window.localStream = null;
-        }
+        window.localStream.getTracks().forEach(track => track.stop());
+        window.localStream = null;
+
+        
         setPeer(null);
         localStorage.removeItem("roomId");
 
@@ -165,7 +151,7 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
     }, [users, peer]);
 
-    
+
     return (
         <div className={"channel-container"}>
 
