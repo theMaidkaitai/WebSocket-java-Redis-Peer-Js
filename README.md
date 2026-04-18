@@ -18,6 +18,6 @@
 https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/  
 </details>
 
-**STACK: Spring, React, Redis, PeerJS (Client/Server)**
+**STACK: Spring(Java 21), React, Redis, PeerJS (Client/Server)**
 
 
