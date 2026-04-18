@@ -21,7 +21,7 @@ export const peerInstanse = async (id: string) => {
 
         },
         secure: true,
-        debug: 1
+        debug: 0
     });
 
 
