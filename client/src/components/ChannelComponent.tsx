@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import dynamic from "../assets/dynamIcon.png"
 import "../styles/ChannelComponentStyles/ChannelStyles.css"
 import UserComponent from "./UserComponent.tsx";
@@ -21,7 +21,7 @@ interface ChannelComponentProps {
 const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
     const { rooms } = useContext(Context);
     const [peer, setPeer] = useState(null);
-
+    const prevUsersRef = useRef([])
 
     const handleJoin = async () => {
         const roomId = localStorage.getItem("roomId");
@@ -63,6 +63,12 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
         setPeer(peerRtc);
     };
+
+
+
+
+
+
 
 
 
@@ -134,6 +140,40 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
     const userId = getCookie("id")
     const isUserInRoom = rooms.isUserInRoom(id, userId);
+
+
+    useEffect(() => {
+        if (!peer) return;
+
+        const prevUsersRef = useRef([]);
+
+        const prevUsers = prevUsersRef.current;
+        const currentUserIds = users.map(u => u.id);
+        const leftUserIds = prevUsers.filter(id =>
+            !currentUserIds.includes(id) && id !== userId
+        );
+
+        leftUserIds.forEach(leftUserId => {
+            console.log("Пользователь вышел, удаляем аудио:", leftUserId);
+            const audioElements = document.querySelectorAll(`audio[data-peer-id="${leftUserId}"]`);
+            audioElements.forEach(audio => {
+                // @ts-ignore
+                audio.pause();
+                // @ts-ignore
+                audio.srcObject = null;
+                audio.remove();
+            });
+
+            if (peer.peer && peer.peer._connections && peer.peer._connections[leftUserId]) {
+                peer.peer._connections[leftUserId].forEach(conn => {
+                    conn.close();
+                });
+            }
+        });
+
+        // Обновляем предыдущий список
+        prevUsersRef.current = currentUserIds;
+    }, [users, peer, userId])
 
 
 
