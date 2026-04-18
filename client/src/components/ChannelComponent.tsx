@@ -165,44 +165,7 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
     }, [users, peer]);
 
-
-    useEffect(() => {
-        if (!peer || !peer.mediaStream) return;
-
-        const myId = getCookie("id");
-        const currentUserIds = users.map(u => u.id);
-
-        if (window.activeCalls) {
-            window.activeCalls.forEach((call, userId) => {
-                if (!currentUserIds.includes(userId) && userId !== myId) {
-                    console.log("Закрываем звонок с:", userId);
-                    call.close();
-                    window.activeCalls.delete(userId);
-                }
-            });
-        }
-
-        users.forEach(user => {
-            if (user.id !== myId && !window.activeCalls?.has(user.id)) {
-                console.log("Звоню пользователю:", user.id);
-                const call = peer.peer.call(user.id, peer.mediaStream);
-
-                if (!window.activeCalls) window.activeCalls = new Map();
-                window.activeCalls.set(user.id, call);
-
-                call.on("stream", (remoteStream) => {
-                    const remoteAudio = new Audio();
-                    remoteAudio.setAttribute("data-peer-id", user.id);
-                    remoteAudio.srcObject = remoteStream;
-                    remoteAudio.play();
-
-                    if (!window.remoteAudios) window.remoteAudios = new Map();
-                    window.remoteAudios.set(user.id, remoteAudio);
-                });
-            }
-        });
-    }, [users, peer]);
-
+    
     return (
         <div className={"channel-container"}>
 
