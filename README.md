@@ -6,4 +6,22 @@
 Проект показан показать возможности Peer JS и не более.
 
 
+<hr>
+
+**Не забудьте**
+Заменить домены на ваш в
+<ul>
+    <li>env файлы</li>
+    <li>peer js (server.js)</li>
+    <li>На клиентской части в папке peer (index.ts)</li>
+</ul>
+
+*Возможная проблема*
+Может конечно же не работать войс из за того, что stun сервера иногда могут умирать, так туш проверяйте их на
+<details>
+https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/  
+</details>
+
 **STACK: Spring, React, Redis, PeerJS (Client/Server)**
+
+
