@@ -1,14 +1,13 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import dynamic from "../assets/dynamIcon.png"
 import "../styles/ChannelComponentStyles/ChannelStyles.css"
 import UserComponent from "./UserComponent.tsx";
 import {Context} from "../main.tsx";
 import { observer } from 'mobx-react-lite';
-import {connectToRoom, disconnectUser, getRooms, getUsersInRoom} from "../ws/rooms/roomsWsApi.ts";
+import {connectToRoom, disconnectUser, getUsersInRoom} from "../ws/rooms/roomsWsApi.ts";
 import {getCookie} from "../ws/getCookie.ts";
 import disconnectIcon from "../assets/disconnectIcon.png"
 import {UserData} from "../store/RoomStore.ts";
-import Peer from "peerjs";
 import {peerInstanse} from "../peer";
 
 
@@ -21,7 +20,6 @@ interface ChannelComponentProps {
 const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
     const { rooms } = useContext(Context);
     const [peer, setPeer] = useState(null);
-    const prevUsersRef = useRef([])
 
     const handleJoin = async () => {
         const roomId = localStorage.getItem("roomId");

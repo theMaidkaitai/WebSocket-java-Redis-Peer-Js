@@ -9,7 +9,7 @@ export const peerInstanse = async (id: string) => {
         key: '1488pozvony',
         config: {
             iceServers: [
-                { urls: 'stun:stun.1und1.de:3478' },
+                { urls: 'stun:stun.1und1.de:3478' }
             ],
 
         },
@@ -25,7 +25,7 @@ export const peerInstanse = async (id: string) => {
 
             // window.localAudio = new Audio();
             // window.localAudio.srcObject = stream;
-            // window.localAudio.autoplay = true; hear myself
+            // window.localAudio.autoplay = true;                hear myself
 
 
             return stream;
@@ -81,7 +81,6 @@ export const peerInstanse = async (id: string) => {
         });
     });
 
-    //peer.call(id, mediaStream);
 
     peer.on("call", async (call) => {
         console.log("ВХОДЯЩИЙ ЗВОНОК ОТ:", call.peer);

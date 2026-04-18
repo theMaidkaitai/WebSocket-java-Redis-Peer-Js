@@ -22,8 +22,9 @@ export default function initClient(roomsStore: RoomStore, onCreateUser: () => vo
 
             setStompClientRooms(client);
             setStompClientUser(client);
-            // users
 
+
+            // users
             let registerSubscription = null;
             registerSubscription = client.subscribe("/topic/users/register", (message) => {
                 try {
@@ -76,7 +77,6 @@ export default function initClient(roomsStore: RoomStore, onCreateUser: () => vo
 
 
             // rooms
-
             client.subscribe('/topic/rooms/get/created/data', (message) => {
                 try {
                     let decodeDate = decoder.decode(message.binaryBody)
@@ -90,8 +90,6 @@ export default function initClient(roomsStore: RoomStore, onCreateUser: () => vo
                     else if (date.body && date.body.id && date.body.name) {
                         roomsStore.addRoom(date.body);
                     }
-
-                    // TODO: в рум стор и отрисовывать
 
                     console.log(date);
                 } catch (error) {
@@ -128,14 +126,6 @@ export default function initClient(roomsStore: RoomStore, onCreateUser: () => vo
                         console.log("Комнаты сохранены в store:", formattedRooms.length);
                     }
 
-                    // else if (date.id && date.name) {
-                    //     roomsStore.addRoom({
-                    //         id: date.id,
-                    //         name: date.name,
-                    //         maxPeople: date.maxPeople,
-                    //         usersId: date.usersId || []
-                    //     });
-                    // }
 
                 } catch (error) {
                     console.error("Ошибка обработки комнат:", error);
@@ -166,14 +156,6 @@ export default function initClient(roomsStore: RoomStore, onCreateUser: () => vo
                     roomsStore.addRoom(formattedRoom);
                     console.log("Комната сохранена в store:", formattedRoom);
 
-                    // else if (date.id && date.name) {
-                    //     roomsStore.addRoom({
-                    //         id: date.id,
-                    //         name: date.name,
-                    //         maxPeople: date.maxPeople,
-                    //         usersId: date.usersId || []
-                    //     });
-                    // }
 
                 } catch (error) {
                     console.error("Ошибка обработки комнат:", error);
@@ -182,26 +164,6 @@ export default function initClient(roomsStore: RoomStore, onCreateUser: () => vo
 
 
 
-            client.subscribe('/topic/rooms/user/action/connect', (message) => {
-                try {
-                    let decodeDate = decoder.decode(message.binaryBody)
-                    let date = JSON.parse(decodeDate);
-
-
-                    // if (date.body && Array.isArray(date.body)) {
-                    //     roomsStore.setRooms(date.body);
-                    // }
-                    // else if (date.body && date.body.id && date.body.name) {
-                    //     roomsStore.addRoom(date.body);
-                    // }
-
-                    // TODO: в рум стор и отрисовывать
-
-                    console.log(date);
-                } catch (error) {
-                    console.log(`Ошибки обработки прогрузки комнат: ${error}`);
-                }
-            });
 
 
             client.subscribe('/topic/rooms/get/users/all', (message) => {
@@ -230,7 +192,6 @@ export default function initClient(roomsStore: RoomStore, onCreateUser: () => vo
 
                         console.log("Formated users", formattedUsers)
 
-                        // @ts-ignore
                         roomsStore.updateUsersInRoom(roomId, formattedUsers);
                     }
 
@@ -243,45 +204,6 @@ export default function initClient(roomsStore: RoomStore, onCreateUser: () => vo
 
 
 
-            // client.subscribe('/topic/public', (message) => {
-            //     try {
-            //         let data;
-            //         if (message.isBinaryBody) {
-            //             const binaryBody = message.binaryBody;
-            //             const text = decoder.decode(binaryBody);
-            //             data = JSON.parse(text);
-            //         } else {
-            //             data = JSON.parse(message.body);
-            //         }
-            //
-            //         console.log('📨 Получены комнаты:', data);
-            //
-            //         if (Array.isArray(data)) {
-            //             roomsStore.setRooms(data);
-            //         }
-            //         else if (data.rooms && Array.isArray(data.rooms)) {
-            //             roomsStore.setRooms(data.rooms);
-            //         }
-            //         else if (data.body && Array.isArray(data.body)) {
-            //             roomsStore.setRooms(data.body);
-            //         }
-            //     }
-            //     catch (error) {
-            //         console.error('Ошибка обработки комнат:', error);
-            //         console.log('Raw message:', message);
-            //     }
-            // });
-
-            // client.subscribe('/topic/room/updates', (message) => {
-            //     const updatedRooms = JSON.parse(message.body);
-            //     roomsStore.setRooms(updatedRooms);
-            //     console.log("Обновление комнаты:", message.body);
-            // });
-
-            // client.publish({
-            //     destination: "/voice/get/rooms",
-            //     headers: { 'content-type': 'application/json' } // get rooms
-            // });
 
             if (onCreateUser) {
                 setTimeout(() => {
