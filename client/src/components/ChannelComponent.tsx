@@ -25,7 +25,7 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
     const handleJoin = async () => {
         const userId = getCookie("id")
-        const roomId = localStorage.setItem("roomId", id)
+        localStorage.setItem("roomId", id)
 
         console.log(`userId: ${userId} roomId: ${id}`)
 
@@ -52,17 +52,12 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
         console.log("PEER MEDIA STREAM:", peerRtc.mediaStream)
 
         setPeer(peerRtc);
-
-
-
-
-
-
     };
 
     const handleDisconnect = async () => {
         const userId = getCookie("id")
         disconnectUser(userId, id)
+        setPeer(null);
     }
 
     useEffect(() => {
@@ -70,6 +65,14 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
         const init = async () => {
             const users = await getUsersInRoom(id)
+
+            const roomId = localStorage.getItem("roomId")
+            const userId = getCookie("id")
+            
+            if (roomId && userId && peer !== null) {
+                await peerInstanse(userId)
+            }
+
             console.log("USERS FROM CHANNEL (Stringify): " + JSON.stringify(users))
             console.log("USERS FROM CHANNEL (not stringify): " + JSON.stringify(users))
         }
