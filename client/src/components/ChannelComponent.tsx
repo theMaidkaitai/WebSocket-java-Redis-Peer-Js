@@ -25,6 +25,8 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
     const handleJoin = async () => {
         const userId = getCookie("id")
+        const roomId = localStorage.setItem("roomId", id)
+
         console.log(`userId: ${userId} roomId: ${id}`)
 
 
@@ -70,12 +72,31 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
             const users = await getUsersInRoom(id)
             console.log("USERS FROM CHANNEL (Stringify): " + JSON.stringify(users))
             console.log("USERS FROM CHANNEL (not stringify): " + JSON.stringify(users))
-
         }
+
+
         init()
     }, []);
 
 
+    useEffect(() => { // when close site
+        const handleCloseSite = async () => {
+            const userId = getCookie("id")
+            const roomId = localStorage.getItem("roomId")
+
+            if (userId && roomId) {
+                disconnectUser(userId, roomId)
+                localStorage.removeItem("roomId")
+            }
+        }
+
+        window.addEventListener("beforeunload", handleCloseSite);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleCloseSite);
+        };
+
+    }, []);
 
 
     const room = rooms.rooms.find(r => r.id === id);
