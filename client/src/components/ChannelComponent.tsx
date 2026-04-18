@@ -67,14 +67,23 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
 
     const handleDisconnect = async () => {
-        const userId = getCookie("id")
-        disconnectUser(userId, id)
+        const userId = getCookie("id");
+        disconnectUser(userId, id);
         peer.peer.destroy();
+
+        const audioElements = document.querySelectorAll('audio');
+        audioElements.forEach(audio => {
+            audio.pause();
+            audio.srcObject = null;
+            audio.remove();
+        });
+
         if (window.localStream) {
             window.localStream.getTracks().forEach(track => track.stop());
-            window.localStream = null
+            window.localStream = null;
         }
         setPeer(null);
+        localStorage.removeItem("roomId");
     }
 
     useEffect(() => {

@@ -47,9 +47,22 @@ export const peerInstanse = async (id: string) => {
 
 
 
-    peer.on("open", () => {
-        console.log("Peer connected, ID:", peer.id);
+    peer.on("connection", (conn) => {
+        console.log("Peer connect:", conn.peer); // здесь conn.peer — это string
+
+        conn.on("close", () => {
+            console.log("Connection closed with:", conn.peer);
+            const audioElements = document.querySelectorAll(`audio[data-peer-id="${conn.peer}"]`);
+            audioElements.forEach(audio => {
+                // @ts-ignore
+                audio.pause();
+                // @ts-ignore
+                audio.srcObject = null;
+                audio.remove();
+            });
+        });
     });
+
 
      peer.on("error", err => {
          console.log("Ошибка Peer error:", err);
@@ -58,10 +71,22 @@ export const peerInstanse = async (id: string) => {
 
     peer.on("connection", connect => {
         console.log("Peer connect:", connect);
+
     })
 
 
-
+    // @ts-ignore
+    peer.on("close", (peerId) => {
+        console.log("Peer closed:", peerId);
+        const audioElements = document.querySelectorAll(`audio[data-peer-id="${peerId}"]`);
+        audioElements.forEach(audio => {
+            // @ts-ignore
+            audio.pause();
+            // @ts-ignore
+            audio.srcObject = null;
+            audio.remove();
+        });
+    });
 
     //peer.call(id, mediaStream);
 
@@ -72,6 +97,7 @@ export const peerInstanse = async (id: string) => {
             call.on("stream", (remoteStream) => {
                 console.log("ПОЛУЧЕН УДАЛЁННЫЙ СТРИМ ОТ:", call.peer);
                 const remoteAudio = new Audio();
+                remoteAudio.setAttribute("data-peer-id", call.peer);
                 remoteAudio.srcObject = remoteStream;
                 remoteAudio.play();
             });
