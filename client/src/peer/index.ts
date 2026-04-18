@@ -10,13 +10,6 @@ export const peerInstanse = async (id: string) => {
         config: {
             iceServers: [
                 { urls: 'stun:stun.1und1.de:3478' },
-                { urls: 'stun:stun.bluesip.net:3478' },
-                {
-                    urls: 'turn:turn.anyfirewall.com:443?transport=tcp',
-                    username: 'webrtc',
-                    credential: 'webrtc'
-                }
-
             ],
 
         },
