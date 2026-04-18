@@ -72,23 +72,6 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
 
 
-        const myId = getCookie("id");
-        const currentUserIds = users.map(u => u.id);
-        window.activeCalls.forEach((call, userId) => {
-            if (!currentUserIds.includes(userId) && userId !== myId) {
-                console.log("Закрываем звонок с:", userId);
-                call.close();
-                window.activeCalls.delete(userId);
-
-                const audio = window.remoteAudios?.get(userId);
-                    audio.pause();
-                    audio.srcObject = null;
-                    audio.remove();
-                    window.remoteAudios.delete(userId);
-            }
-        });
-
-
         window.localStream.getTracks().forEach(track => track.stop());
         window.localStream = null;
 
@@ -159,18 +142,59 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
 
         const myId = getCookie("id");
 
+        if (!window.activeCalls) window.activeCalls = new Map();
+        if (!window.remoteAudios) window.remoteAudios = new Map();
+
+        const currentUserIds = users.map(u => u.id);
+
+        window.activeCalls.forEach((call, userId) => {
+            if (!currentUserIds.includes(userId) && userId !== myId) {
+                console.log("Закрываем звонок с:", userId);
+                call.close();
+                window.activeCalls.delete(userId);
+
+                const audio = window.remoteAudios.get(userId);
+                if (audio) {
+                    audio.pause();
+                    audio.srcObject = null;
+                    audio.remove();
+                    window.remoteAudios.delete(userId);
+                }
+            }
+        });
+
         if (users && users.length > 0) {
             users.forEach(user => {
-                if (user.id !== myId) {
+                if (user.id !== myId && !window.activeCalls.has(user.id)) {
                     console.log("Звоню пользователю:", user.id);
-                    peer.peer.call(user.id, peer.mediaStream);
+                    const call = peer.peer.call(user.id, peer.mediaStream);
+
+                    window.activeCalls.set(user.id, call);
+
+                    call.on("stream", (remoteStream) => {
+                        console.log("Получен стрим от:", user.id);
+                        const remoteAudio = new Audio();
+                        remoteAudio.setAttribute("data-peer-id", user.id);
+                        remoteAudio.srcObject = remoteStream;
+                        remoteAudio.play();
+                        window.remoteAudios.set(user.id, remoteAudio);
+                    });
+
+                    call.on("close", () => {
+                        console.log("Звонок закрыт с:", user.id);
+                        const audio = window.remoteAudios.get(user.id);
+                        if (audio) {
+                            audio.pause();
+                            audio.srcObject = null;
+                            audio.remove();
+                            window.remoteAudios.delete(user.id);
+                        }
+                        window.activeCalls.delete(user.id);
+                    });
                 }
             });
         }
-
     }, [users, peer]);
-
-
     return (
         <div className={"channel-container"}>
 
