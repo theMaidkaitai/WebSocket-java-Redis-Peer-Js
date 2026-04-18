@@ -100,6 +100,20 @@ export const peerInstanse = async (id: string) => {
                 remoteAudio.setAttribute("data-peer-id", call.peer);
                 remoteAudio.srcObject = remoteStream;
                 remoteAudio.play();
+
+                if (!window.remoteAudios) window.remoteAudios = new Map();
+                window.remoteAudios.set(call.peer, remoteAudio);
+            });
+
+            call.on("close", () => {
+                console.log("Звонок закрыт с:", call.peer);
+                const audio = window.remoteAudios?.get(call.peer);
+                if (audio) {
+                    audio.pause();
+                    audio.srcObject = null;
+                    audio.remove();
+                    window.remoteAudios.delete(call.peer);
+                }
             });
         }
     });
