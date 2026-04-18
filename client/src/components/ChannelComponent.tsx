@@ -73,7 +73,7 @@ const ChannelComponent = observer(({id, title}: ChannelComponentProps) => {
         window.localStream.getTracks().forEach(track => track.stop());
         window.localStream = null;
 
-        
+
         setPeer(null);
         localStorage.removeItem("roomId");
 
